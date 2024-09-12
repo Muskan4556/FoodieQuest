@@ -14,6 +14,6 @@ app.get("/test", async (req: Request, res: Response) => {
   });
 });
 
-app.listen(4000, () => {
-  console.log("Server is running on PORT: 4000 - http://localhost:4000/");
+app.listen(3000, () => {
+  console.log("Server is running on PORT: 4000 - http://localhost:3000/");
 });
