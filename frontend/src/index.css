@@ -62,3 +62,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Shimmer effect */
+.shimmer {
+  background: linear-gradient(to right, #f6f7f8 8%, #eaeaea 18%, #f6f7f8 33%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1200px 0;
+  }
+  100% {
+    background-position: 1200px 0;
+  }
+}
