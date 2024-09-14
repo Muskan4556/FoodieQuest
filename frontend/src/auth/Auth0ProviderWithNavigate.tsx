@@ -16,6 +16,7 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
   // This function is called after the user successfully authenticates and is redirected back to the application.
   const onRedirectCallback = (appState?: AppState, user?: User) => {
     console.log("User: ", user);
+    console.log(appState);
   };
 
   return (
