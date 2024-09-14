@@ -31,13 +31,25 @@ const UsernameMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem>
-          <Link to="/user-profile" className=" font-medium text-black/70 hover:text-orange-500">
+          <Link
+            to="/user-profile"
+            className=" font-medium text-black/70 hover:text-orange-500"
+          >
             User Profile
           </Link>
         </DropdownMenuItem>
         <Separator />
         <DropdownMenuItem>
-          <span onClick={() => logout()} className="font-medium text-black/70 hover:text-orange-500">
+          <span
+            onClick={() =>
+              logout({
+                logoutParams: {
+                  returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
+                },
+              })
+            }
+            className="font-medium text-black/70 hover:text-orange-500"
+          >
             Log Out
           </span>
         </DropdownMenuItem>

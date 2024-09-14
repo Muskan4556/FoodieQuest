@@ -52,7 +52,11 @@ const MobileNav = () => {
                 </Link>
                 <div className="flex justify-center mx-2 mt-4 w-full">
                   <Button
-                    onClick={() => logout()}
+                    onClick={() => logout({
+                      logoutParams: {
+                        returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
+                      },
+                    })}
                     className="flex-1 font-bold bg-orange-500 hover:bg-orange-600"
                   >
                     Log Out
