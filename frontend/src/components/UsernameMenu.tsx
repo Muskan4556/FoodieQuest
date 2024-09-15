@@ -48,7 +48,7 @@ const UsernameMenu = () => {
                 },
               })
             }
-            className="font-medium text-black/70 hover:text-orange-500"
+            className="font-medium text-black/70 hover:text-orange-500 cursor-pointer"
           >
             Log Out
           </span>

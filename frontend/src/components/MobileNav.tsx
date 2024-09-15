@@ -27,12 +27,14 @@ const MobileNav = () => {
       <SheetContent>
         <SheetHeader>
           <SheetTitle>
-            <span className="font-bold tracking-tight">Welcome to Foodie Quest</span>
+            <span className="font-bold tracking-tight">
+              Welcome to Foodie Quest
+            </span>
           </SheetTitle>
           <Separator />
           <SheetDescription className="flex">
             {isAuthenticated ? (
-              <div className="flex flex-col items-start mt-4 gap-">
+              <div className="flex flex-col items-start mt-4 w-full">
                 <Link to="/user-profile">
                   <div className="flex">
                     <img
@@ -50,13 +52,15 @@ const MobileNav = () => {
                     </div>
                   </div>
                 </Link>
-                <div className="flex justify-center mx-2 mt-4 w-full">
+                <div className="flex justify-center  mt-6 w-full">
                   <Button
-                    onClick={() => logout({
-                      logoutParams: {
-                        returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
-                      },
-                    })}
+                    onClick={() =>
+                      logout({
+                        logoutParams: {
+                          returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
+                        },
+                      })
+                    }
                     className="flex-1 font-bold bg-orange-500 hover:bg-orange-600"
                   >
                     Log Out
