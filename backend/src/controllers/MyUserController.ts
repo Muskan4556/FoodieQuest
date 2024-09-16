@@ -25,3 +25,32 @@ export const createCurrentUser = async (req: Request, res: Response) => {
 
   const user = User.find();
 };
+
+export const updateCurrentUser = async (req: Request, res: Response) => {
+  try {
+    // 1. check user exist in database if not 404
+    // 2. update and return
+    const { name, city, address, country } = req.body;
+
+    const user = await User.findById(req.userId);
+    if (!user)
+      return res.status(404).json({
+        message: "User not found",
+      });
+    await User.findByIdAndUpdate(
+      req.userId,
+      { name, city,address,country },
+      {
+        new: true,
+      }
+    );
+    res.status(200).json({
+      message: "updated",
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Error updating user",
+    });
+  }
+};
