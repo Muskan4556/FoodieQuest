@@ -11,6 +11,7 @@ import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const MobileNav = () => {
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
@@ -54,13 +55,14 @@ const MobileNav = () => {
                 </Link>
                 <div className="flex justify-center  mt-6 w-full">
                   <Button
-                    onClick={() =>
+                    onClick={() => {
                       logout({
                         logoutParams: {
                           returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
                         },
-                      })
-                    }
+                      });
+                      toast.success("Logged out successfully!");
+                    }}
                     className="flex-1 font-bold bg-orange-500 hover:bg-orange-600"
                   >
                     Log Out

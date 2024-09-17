@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
+import { toast } from "sonner";
 
 const UsernameMenu = () => {
   const { user, logout } = useAuth0();
@@ -41,13 +42,14 @@ const UsernameMenu = () => {
         <Separator />
         <DropdownMenuItem>
           <span
-            onClick={() =>
+            onClick={() => {
               logout({
                 logoutParams: {
                   returnTo: import.meta.env.VITE_AUTH0_CALLBACK_URL,
                 },
-              })
-            }
+              });
+              toast.success("Logged out successfully!");
+            }}
             className="font-medium text-black/70 hover:text-orange-500 cursor-pointer"
           >
             Log Out
