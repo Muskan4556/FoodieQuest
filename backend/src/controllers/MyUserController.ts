@@ -33,13 +33,14 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
     const { name, city, address, country } = req.body;
 
     const user = await User.findById(req.userId);
+
     if (!user)
       return res.status(404).json({
         message: "User not found",
       });
     await User.findByIdAndUpdate(
       req.userId,
-      { name, city,address,country },
+      { name, city, address, country },
       {
         new: true,
       }
@@ -52,5 +53,20 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
     res.status(500).json({
       message: "Error updating user",
     });
+  }
+};
+
+export const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    // 1. check user exits in db by using req.userId(db _id)
+    // 2. If yes return user
+
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    return res.json(user);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Something went wrong" });
   }
 };

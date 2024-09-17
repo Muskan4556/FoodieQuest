@@ -2,11 +2,10 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Homepage from "./pages/Homepage";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
-import { useAuth0 } from "@auth0/auth0-react";
 import UserProfilePage from "./pages/UserProfilePage";
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth0();
   return (
     <>
       <Routes>
@@ -19,7 +18,8 @@ const AppRoutes = () => {
           }
         />
         <Route path="/auth-callback" element={<AuthCallbackPage />} />
-        {isAuthenticated && (
+
+        <Route element={<ProtectedRoute />}>
           <Route
             path="/user-profile"
             element={
@@ -28,7 +28,8 @@ const AppRoutes = () => {
               </Layout>
             }
           />
-        )}
+        </Route>
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </>
