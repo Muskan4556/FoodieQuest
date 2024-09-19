@@ -1,5 +1,7 @@
 import appDownload from "@/assets/appDownload.png";
 import landing from "@/assets/landing.png";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Homepage = () => {
   return (
@@ -11,17 +13,18 @@ const Homepage = () => {
         <div className="text-xl">Food is one click away!</div>
       </div>
       <div className="grid md:grid-cols-2 gap-5">
-        <img src={landing} alt="landing image" />
+        <LazyLoadImage effect="blur" src={landing} alt="landing image" />
         <div className="flex flex-col justify-center items-center gap-4 text-center">
-            <span className="font-bold text-3xl tracking-tighter">
-                Order Takeway even faster
-            </span>
-            <span className="text-black/70 ">
-                Download Foodie Quest App for faster ordering and personalized recommendations
-            </span>
-            <span>
-                <img src={appDownload} alt="app Image" />
-            </span>
+          <span className="font-bold text-3xl tracking-tighter">
+            Order Takeway even faster
+          </span>
+          <span className="text-black/70 ">
+            Download Foodie Quest App for faster ordering and personalized
+            recommendations
+          </span>
+          <span>
+            <LazyLoadImage effect="blur" src={appDownload} alt="app Image" />
+          </span>
         </div>
       </div>
     </div>
