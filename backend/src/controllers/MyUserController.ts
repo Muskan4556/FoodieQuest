@@ -22,8 +22,6 @@ export const createCurrentUser = async (req: Request, res: Response) => {
       message: "Error creating current user",
     });
   }
-
-  const user = User.find();
 };
 
 export const updateCurrentUser = async (req: Request, res: Response) => {
