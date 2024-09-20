@@ -31,12 +31,20 @@ const UsernameMenu = () => {
         {isOpen ? <ChevronUp /> : <ChevronDown />}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <DropdownMenuItem >
           <Link
             to="/user-profile"
-            className=" font-medium text-black/70 hover:text-orange-500"
+            className=" font-medium tracking-tight text-base text-black/70 hover:text-orange-500"
           >
             User Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link
+            to="/manage-restaurant"
+            className=" font-medium tracking-tight text-base text-black/70 hover:text-orange-500"
+          >
+            Manage Restaurant
           </Link>
         </DropdownMenuItem>
         <Separator />
@@ -50,7 +58,7 @@ const UsernameMenu = () => {
               });
               toast.success("Logged out successfully!");
             }}
-            className="font-medium text-black/70 hover:text-orange-500 cursor-pointer"
+            className="font-medium tracking-tight text-base text-black/70 hover:text-orange-500 cursor-pointer"
           >
             Log Out
           </span>

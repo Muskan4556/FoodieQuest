@@ -28,7 +28,7 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
   try {
     // 1. check user exist in database if not 404
     // 2. update and return
-    const { name, city, address, country } = req.body;
+    const { name, city, address } = req.body;
 
     const user = await User.findById(req.userId);
 
@@ -38,7 +38,7 @@ export const updateCurrentUser = async (req: Request, res: Response) => {
       });
     await User.findByIdAndUpdate(
       req.userId,
-      { name, city, address, country },
+      { name, city, address },
       {
         new: true,
       }

@@ -5,7 +5,6 @@ export type User = {
   name: string;
   address: string;
   city: string;
-  country: string;
   createdAt: Date;
   updatedAt: Date;
 };

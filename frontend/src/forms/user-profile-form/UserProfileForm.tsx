@@ -22,7 +22,6 @@ const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
-  country: z.string().min(1, "Country is required"),
 });
 
 type UserFormData = z.infer<typeof formSchema>;
@@ -121,28 +120,11 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem className="flex-1">
-                <FormLabel>Country</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    className="bg-white"
-                    placeholder="Enter your Country"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
         </div>
         {isLoading ? (
-          <LoadingButton />
+          <LoadingButton value="Submit" />
         ) : (
-          <Button type="submit" className="bg-orange-500 hover:bg-orange-600">
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-400">
             Submit
           </Button>
         )}

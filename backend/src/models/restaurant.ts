@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 
 const menuItemSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
+  name: { type: String, required: true, trim: true },
+  price: { type: Number, required: true, min: 0 },
 });
 
 const RestaurantSchema = new mongoose.Schema(
   {
     // reference to the user document
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    name: { type: String, required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    name: { type: String, required: true, trim: true },
     imageUrl: { type: String, required: true },
-    locality: { type: String, required: true },
-    areaName: { type: String, required: true },
-    costForTwo: { type: String, required: true },
-    avgRating: { type: String },
-    deliveryPrice: { type: Number, required: true },
-    deliveryTime: { type: Number, required: true },
+    locality: { type: String, required: true, trim: true },
+    areaName: { type: String, required: true, trim: true },
+    city: { type: String, required: true, trim: true },
+    costForTwo: { type: String, required: true, trim: true },
+    avgRating: { type: Number, min: 0, max: 5 },
+    deliveryPrice: { type: Number, required: true, min: 0, max: 2000 },
+    deliveryTime: { type: Number, required: true, min: 0, max: 120 },
     cuisines: [{ type: String, required: true }],
     menuItems: [menuItemSchema],
   },

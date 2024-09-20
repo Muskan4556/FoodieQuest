@@ -53,6 +53,11 @@ const MobileNav = () => {
                     </div>
                   </div>
                 </Link>
+                <Link to="manage-restaurant" className=" flex justify-start mt-6 w-full">
+                  <Button variant="outline" className="flex-1 font-bold  ">
+                    Manage Restaurant
+                  </Button>
+                </Link>
                 <div className="flex justify-center  mt-6 w-full">
                   <Button
                     onClick={() => {

@@ -1,10 +1,15 @@
 import { Loader2 } from "lucide-react";
 import { Button } from "./ui/button";
 
-const LoadingButton = () => {
+type Props = {
+  value: string;
+};
+
+const LoadingButton = ({ value }: Props) => {
   return (
-    <Button disabled className="bg-orange-600 w-[4.9rem]">
-      <Loader2 className="mr-2 h-4 w-4 animate-spin " />
+    <Button disabled className="bg-orange-600  flex">
+      <div>{value} </div>
+      <Loader2 className="ml-2 h-4 w-4 animate-spin " />
     </Button>
   );
 };

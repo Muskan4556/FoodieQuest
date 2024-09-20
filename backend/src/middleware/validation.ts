@@ -19,7 +19,6 @@ export const validateMyUserRequest = [
   body("name").optional().isString().withMessage("Name must be a string"),
   body("address").optional().isString().withMessage("Address must be a string"),
   body("city").optional().isString().withMessage("City must be a string"),
-  body("country").optional().isString().withMessage("Country must be a string"),
   handleValidationErrors,
 ];
 
@@ -27,6 +26,7 @@ export const validateMyRestaurantRequest = [
   body("name").notEmpty().withMessage("Restaurant name is required"),
   body("locality").notEmpty().withMessage("Locality is required"),
   body("areaName").notEmpty().withMessage("Area name is required"),
+  body("city").notEmpty().withMessage("City name is required"),
   body("costForTwo").notEmpty().withMessage("CostForTwo is required"),
   body("avgRating").optional(),
   body("deliveryPrice")
