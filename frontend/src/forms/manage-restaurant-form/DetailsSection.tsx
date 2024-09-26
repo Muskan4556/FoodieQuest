@@ -26,7 +26,7 @@ const DetailsSection = () => {
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white" />
+              <Input {...field} className="bg-white  p-2 text-sm sm:text-base md:text-lg w-full" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -49,6 +49,20 @@ const DetailsSection = () => {
         />
         <FormField
           control={control}
+          name="locality"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel>Locality</FormLabel>
+              <FormControl>
+                <Input {...field} className="bg-white" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
           name="city"
           render={({ field }) => (
             <FormItem className="flex-1">
@@ -65,10 +79,45 @@ const DetailsSection = () => {
       <div className="flex flex-col md:flex-row gap-4">
         <FormField
           control={control}
+          name="costForTwo"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel className="whitespace-nowrap">
+                Cost for two (in Rs)
+              </FormLabel>
+              <FormControl>
+                <Input {...field} className="bg-white" placeholder="200-400" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
+          name="avgRating"
+          render={({ field }) => (
+            <FormItem className="flex-1">
+              <FormLabel className="whitespace-nowrap">
+                Average Rating (optional)
+              </FormLabel>
+              <FormControl>
+                <Input {...field} className="bg-white" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-4">
+        <FormField
+          control={control}
           name="deliveryTime"
           render={({ field }) => (
             <FormItem className="md:max-w-[25%]">
-              <FormLabel>Delivery Time (in minutes)</FormLabel>
+              <FormLabel className="whitespace-nowrap">
+                Delivery Time (in minutes)
+              </FormLabel>
 
               <FormControl>
                 <Input {...field} className="bg-white" placeholder="55" />

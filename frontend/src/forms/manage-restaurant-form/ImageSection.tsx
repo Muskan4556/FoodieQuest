@@ -6,22 +6,33 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useFormContext } from "react-hook-form";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const ImageSection = () => {
-  const { control } = useFormContext();
+  const { control, watch } = useFormContext();
+
+  const existingImageUrl = watch("imageUrl");
 
   return (
     <div className="space-y-2">
       <div>
         <h2 className="font-bold text-2xl">Images</h2>
-        <FormDescription>
+        <FormDescription className="text-xs tracking-tight  md:text-base">
           Add a image that will be displayed on your restaurant listing in the
           search results. Adding a new image will override the existing one.
         </FormDescription>
       </div>
-      <div className="flex flex-col gap-8 w-[50%]">
+      <div className="flex flex-col gap-8 md:w-[50%]">
+        {existingImageUrl && (
+          <AspectRatio ratio={16 / 9}>
+            <LazyLoadImage
+              src={existingImageUrl}
+              className="rounded-md object-cover h-full w-full "
+            ></LazyLoadImage>
+          </AspectRatio>
+        )}
         <FormField
           control={control}
           name="imageFile"

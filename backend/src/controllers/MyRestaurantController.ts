@@ -30,3 +30,17 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
+export const getMyRestaurant = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant)
+      return res.status(404).json({
+        message: "You don't have a restaurant",
+      });
+    return res.json(restaurant);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error fetching restaurant" });
+  }
+};

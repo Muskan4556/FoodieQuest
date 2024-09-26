@@ -54,7 +54,7 @@ const MobileNav = () => {
                   </div>
                 </Link>
                 <Link to="manage-restaurant" className=" flex justify-start mt-6 w-full">
-                  <Button variant="outline" className="flex-1 font-bold  ">
+                  <Button variant="outline" className="flex-1 font-bold hover:text-orange-500 ">
                     Manage Restaurant
                   </Button>
                 </Link>
