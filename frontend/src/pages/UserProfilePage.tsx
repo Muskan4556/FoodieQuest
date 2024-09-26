@@ -1,4 +1,5 @@
 import { useGetMyUser, useUpdateMyUser } from "@/api/MyUserApi";
+import Loader from "@/components/Loader";
 import UserProfileForm from "@/forms/user-profile-form/UserProfileForm";
 
 const UserProfilePage = () => {
@@ -6,11 +7,7 @@ const UserProfilePage = () => {
   const { updateUser, isLoading: isUpdateLoading } = useUpdateMyUser();
 
   if (isGetLoading) {
-    return (
-      <div className="flex h-[60vh] items-center justify-center bg-white dark:bg-black">
-        <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!currentUser) {

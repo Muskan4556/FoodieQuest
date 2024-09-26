@@ -55,13 +55,8 @@ export const useGetMyRestaurant = () => {
   };
   const {
     data: restaurant,
-    error,
     isLoading,
   } = useQuery("fetchMyRestaurant", getMyRestaurantRequest);
-
-  if (error) {
-    toast.error(error.toString());
-  }
 
   return {
     restaurant,

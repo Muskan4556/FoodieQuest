@@ -26,7 +26,7 @@ const DetailsSection = () => {
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <Input {...field} className="bg-white  p-2 text-sm sm:text-base md:text-lg w-full" />
+              <Input {...field} className="bg-white" />
             </FormControl>
             <FormMessage />
           </FormItem>
