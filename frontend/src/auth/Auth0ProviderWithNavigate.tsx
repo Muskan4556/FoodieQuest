@@ -5,6 +5,10 @@ type Props = {
   children: React.ReactNode;
 };
 
+interface AppState {
+  returnTo?: string; // optional property
+}
+
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const navigate = useNavigate();
 
@@ -18,8 +22,8 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
   }
 
   // This function is called after the user successfully authenticates and is redirected back to the application.
-  const onRedirectCallback = () => {
-    navigate("/auth-callback");
+  const onRedirectCallback = (appState?: AppState) => {
+    navigate(appState?.returnTo || "/");
   };
 
   return (
@@ -31,6 +35,8 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
         audience,
       }}
       onRedirectCallback={onRedirectCallback}
+      useRefreshTokens={true} // Use refresh tokens
+      cacheLocation="localstorage" // Persist across page refreshes
     >
       {children}
     </Auth0Provider>

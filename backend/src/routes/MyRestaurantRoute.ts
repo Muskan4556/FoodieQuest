@@ -2,6 +2,7 @@ import express from "express";
 import {
   createMyRestaurant,
   getMyRestaurant,
+  updateMyRestaurant,
 } from "../controllers/MyRestaurantController";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import multer from "multer";
@@ -28,6 +29,11 @@ router.post(
   jwtParse,
   createMyRestaurant
 );
+
+router.put("/",upload.single("imageFile"),
+validateMyRestaurantRequest,
+jwtCheck,
+jwtParse,updateMyRestaurant )
 
 export default router;
 

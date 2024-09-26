@@ -26,47 +26,54 @@ const priceValidation = z.coerce
   })
   .gt(0, { message: "Price must be greater than zero" });
 
-const formSchema = z.object({
-  name: nameSchema.refine((val) => val.length > 0, {
-    message: "Restaurant name cannot be empty",
-  }),
+const formSchema = z
+  .object({
+    name: nameSchema.refine((val) => val.length > 0, {
+      message: "Restaurant name cannot be empty",
+    }),
 
-  locality: nameSchema,
-  areaName: nameSchema,
-  city: nameSchema,
-  costForTwo: nameSchema,
+    locality: nameSchema,
+    areaName: nameSchema,
+    city: nameSchema,
+    costForTwo: nameSchema,
 
-  avgRating: z.coerce
-    .number()
-    .min(0, { message: "Rating must be a positive number" })
-    .max(5, { message: "Rating should be less than or equal to 5" })
-    .optional(),
+    avgRating: z.coerce
+      .number()
+      .min(0, { message: "Rating must be a positive number" })
+      .max(5, { message: "Rating should be less than or equal to 5" })
+      .optional(),
 
-  deliveryPrice: priceValidation.lt(2000, {
-    message: "Delivery price must be less than Rs.2000",
-  }),
+    deliveryPrice: priceValidation.lt(2000, {
+      message: "Delivery price must be less than Rs.2000",
+    }),
 
-  deliveryTime: z.coerce
-    .number({
-      required_error: "Delivery time is required",
-      invalid_type_error: "Must be a valid number",
-    })
-    .gt(0, { message: "Delivery time must be greater than zero" })
-    .lt(120, { message: "Delivery time should be less than 120 minutes" }),
+    deliveryTime: z.coerce
+      .number({
+        required_error: "Delivery time is required",
+        invalid_type_error: "Must be a valid number",
+      })
+      .gt(0, { message: "Delivery time must be greater than zero" })
+      .lt(120, { message: "Delivery time should be less than 120 minutes" }),
 
-  cuisines: z
-    .array(z.string())
-    .nonempty({ message: "Please select at least one cuisine" }),
+    cuisines: z
+      .array(z.string())
+      .nonempty({ message: "Please select at least one cuisine" }),
 
-  menuItems: z.array(
-    z.object({
-      name: z.string().min(1, { message: "Item name is required" }),
-      price: priceValidation,
-    })
-  ),
-
-  imageFile: z.instanceof(File, { message: "Image file is required" }),
-});
+    menuItems: z.array(
+      z.object({
+        name: z.string().min(1, { message: "Item name is required" }),
+        price: priceValidation,
+      })
+    ),
+    imageUrl: z.string().optional(),
+    imageFile: z
+      .instanceof(File, { message: "Image file is required" })
+      .optional(),
+  })
+  .refine((data) => data.imageUrl || data.imageFile, {
+    message: "Either image url or image file must be provided",
+    path: ["imageFile"],
+  });
 
 type RestaurantFormData = z.infer<typeof formSchema>;
 
@@ -124,9 +131,12 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
       formData.append(`menuItems[${i}][name]`, menu.name);
       formData.append(`menuItems[${i}][price]`, menu.price.toString());
     });
-    formData.append(`imageFile`, formDataJson.imageFile);
+    if (formDataJson.imageFile) {
+      formData.append(`imageFile`, formDataJson.imageFile);
+    }
     if (formDataJson?.avgRating)
       formData.append("avgRating", formDataJson.avgRating.toString());
+
     onSave(formData);
   };
 
