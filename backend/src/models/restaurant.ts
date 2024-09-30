@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const menuItemSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   price: { type: Number, required: true, min: 0 },
+  description: {type:String,trim:true},
+  imageUrl: { type: String },
 });
 
 const RestaurantSchema = new mongoose.Schema(

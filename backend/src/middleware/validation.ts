@@ -46,5 +46,6 @@ export const validateMyRestaurantRequest = [
   body("menuItems.*.price")
     .isFloat({ min: 0.0 })
     .withMessage("Menu item price is required and must be a positive number"),
+    body("menuItems.*.description").optional(),
   handleValidationErrors,
 ];

@@ -1,7 +1,14 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
 import cloudinary from "cloudinary";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
+
+interface MenuItem extends Document {
+  name: string;
+  price: number;
+  description?: string ;
+  imageUrl: string;
+}
 
 const uploadImage = async (file: Express.Multer.File) => {
   const image = file;
@@ -16,6 +23,8 @@ const uploadImage = async (file: Express.Multer.File) => {
 
 export const createMyRestaurant = async (req: Request, res: Response) => {
   try {
+    console.log('Files:', req.files);  // Log uploaded files
+    console.log('Body:', req.body);    // Log form data
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
     if (existingRestaurant) {
       return res.status(409).json({
@@ -23,17 +32,39 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
       });
     }
 
-    // const image = req.file as Express.Multer.File;
-    // // convert binary data into base64 string
-    // const base64Image = Buffer.from(image.buffer).toString("base64");
-    // const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-    // const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+    // Extract the uploaded files
+    const files = req.files as {
+      imageFile: Express.Multer.File[];
+      menuFiles?: Express.Multer.File[];
+    };
 
-    const imageUrl = await uploadImage(req.file as Express.Multer.File);
+    const imageUrl = files?.imageFile
+      ? await uploadImage(files.imageFile[0])
+      : null;
 
     const restaurant = new Restaurant(req.body);
-    restaurant.imageUrl = imageUrl;
+    if (typeof imageUrl === "string") restaurant.imageUrl = imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
+
+    const menuItems = req.body.menuItems;
+    const menuFiles = files?.menuFiles || [];
+
+    const menuItemsWithImages: MenuItem[] = await Promise.all(
+      menuItems.map(async (item: any, index: number) => {
+        const menuFile = menuFiles[index];
+
+        return {
+          name: item.name,
+          price: item.price,
+          description: item.description,
+          imageUrl: menuFile ? await uploadImage(menuFile) : null,
+        } as MenuItem;
+      })
+    );
+
+    restaurant.menuItems =
+      menuItemsWithImages as mongoose.Types.DocumentArray<MenuItem>;
+
     await restaurant.save();
 
     res.status(201).send(restaurant);
@@ -68,29 +99,51 @@ export const updateMyRestaurant = async (req: Request, res: Response) => {
     deliveryTime,
     avgRating,
     cuisines,
-    menuItems,
-    imageUrl,
   } = req.body;
   try {
     const restaurant = await Restaurant.findOne({ user: req.userId });
     if (!restaurant)
       return res.status(404).json({ message: "Restaurant not found" });
 
-    restaurant.name = name;
-    restaurant.locality = locality;
-    restaurant.areaName = areaName;
-    restaurant.city = city;
-    restaurant.costForTwo = costForTwo;
-    restaurant.deliveryPrice = deliveryPrice;
-    restaurant.deliveryTime = deliveryTime;
-    restaurant.avgRating = avgRating;
-    restaurant.cuisines = cuisines;
-    restaurant.menuItems = menuItems;
+    restaurant.name = name || restaurant.name;
+    restaurant.locality = locality || restaurant.locality;
+    restaurant.areaName = areaName || restaurant.areaName;
+    restaurant.city = city || restaurant.city;
+    restaurant.costForTwo = costForTwo || restaurant.costForTwo;
+    restaurant.deliveryPrice = deliveryPrice || restaurant.deliveryPrice;
+    restaurant.deliveryTime = deliveryTime || restaurant.deliveryTime;
+    restaurant.avgRating = avgRating || restaurant.avgRating;
+    restaurant.cuisines = cuisines || restaurant.cuisines;
 
-    if (req.file) {
-      const imageUrl = await uploadImage(req.file as Express.Multer.File);
-      restaurant.imageUrl = imageUrl;
-    }
+    // Extract the uploaded files
+    const files = req.files as {
+      imageFile?: Express.Multer.File[];
+      menuFiles?: Express.Multer.File[];
+    };
+
+    const imageUrl = files?.imageFile
+      ? await uploadImage(files.imageFile[0])
+      : restaurant.imageUrl;
+    restaurant.imageUrl = imageUrl;
+
+    const menuItems = req.body.menuItems;
+    const menuFiles = files?.menuFiles || [];
+
+    const menuItemsWithImages: MenuItem[] = await Promise.all(
+      menuItems.map(async (item: any, index: number) => {
+        const menuFile = menuFiles[index];
+
+        return {
+          name: item.name || restaurant.menuItems[index]?.name,
+          price: item.price || restaurant.menuItems[index]?.price,
+          description: item.description || restaurant.menuItems[index]?.description,
+          imageUrl: menuFile ? await uploadImage(menuFile) : restaurant.menuItems[index]?.imageUrl,
+        } as MenuItem;
+      })
+    );
+
+    restaurant.menuItems =
+      menuItemsWithImages as mongoose.Types.DocumentArray<MenuItem>;
 
     await restaurant.save();
 

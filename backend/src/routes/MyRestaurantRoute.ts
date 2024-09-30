@@ -1,12 +1,13 @@
 import express from "express";
+
+import { jwtCheck, jwtParse } from "../middleware/auth";
+import multer from "multer";
+import { validateMyRestaurantRequest } from "../middleware/validation";
 import {
   createMyRestaurant,
   getMyRestaurant,
   updateMyRestaurant,
 } from "../controllers/MyRestaurantController";
-import { jwtCheck, jwtParse } from "../middleware/auth";
-import multer from "multer";
-import { validateMyRestaurantRequest } from "../middleware/validation";
 
 const router = express.Router();
 
@@ -23,17 +24,28 @@ router.get("/", jwtCheck, jwtParse, getMyRestaurant);
 
 router.post(
   "/",
-  upload.single("imageFile"),
+
+  upload.fields([
+    { name: "imageFile", maxCount: 1 },
+    { name: "menuFiles", maxCount: 10 },
+  ]),
   validateMyRestaurantRequest,
   jwtCheck,
   jwtParse,
   createMyRestaurant
 );
 
-router.put("/",upload.single("imageFile"),
-validateMyRestaurantRequest,
-jwtCheck,
-jwtParse,updateMyRestaurant )
+router.put(
+  "/",
+  upload.fields([
+    { name: "imageFile", maxCount: 1 },
+    { name: "menuFiles", maxCount: 10 },
+  ]),
+  validateMyRestaurantRequest,
+  jwtCheck,
+  jwtParse,
+  updateMyRestaurant
+);
 
 export default router;
 
