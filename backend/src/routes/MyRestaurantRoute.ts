@@ -24,11 +24,12 @@ router.get("/", jwtCheck, jwtParse, getMyRestaurant);
 
 router.post(
   "/",
-
   upload.fields([
-    { name: "imageFile", maxCount: 1 },
-    { name: "menuFiles", maxCount: 10 },
+    { name: "imageFile" },
+    { name: "menuItems[0][image]", maxCount: 1 }, // For the first menu item
+    { name: "menuItems[1][image]", maxCount: 1 }, // For the second menu item, add more as needed
   ]),
+
   validateMyRestaurantRequest,
   jwtCheck,
   jwtParse,
@@ -38,8 +39,9 @@ router.post(
 router.put(
   "/",
   upload.fields([
-    { name: "imageFile", maxCount: 1 },
-    { name: "menuFiles", maxCount: 10 },
+    { name: "imageFile" },
+    { name: "menuItems[0][image]", maxCount: 1 }, // For the first menu item
+    { name: "menuItems[1][image]", maxCount: 1 }, // For the second menu item, add more as needed
   ]),
   validateMyRestaurantRequest,
   jwtCheck,

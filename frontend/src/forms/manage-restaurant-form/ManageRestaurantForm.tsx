@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Restaurant } from "@/types";
 import { useEffect } from "react";
 
+// Validation Schemas
 const nameSchema = z
   .string({
     required_error: "This field is required",
@@ -31,22 +32,18 @@ const formSchema = z
     name: nameSchema.refine((val) => val.length > 0, {
       message: "Restaurant name cannot be empty",
     }),
-
     locality: nameSchema,
     areaName: nameSchema,
     city: nameSchema,
     costForTwo: nameSchema,
-
     avgRating: z.coerce
       .number()
       .min(0, { message: "Rating must be a positive number" })
       .max(5, { message: "Rating should be less than or equal to 5" })
       .optional(),
-
     deliveryPrice: priceValidation.lt(2000, {
       message: "Delivery price must be less than Rs.2000",
     }),
-
     deliveryTime: z.coerce
       .number({
         required_error: "Delivery time is required",
@@ -54,24 +51,25 @@ const formSchema = z
       })
       .gt(0, { message: "Delivery time must be greater than zero" })
       .lt(120, { message: "Delivery time should be less than 120 minutes" }),
-
     cuisines: z
       .array(z.string())
       .nonempty({ message: "Please select at least one cuisine" }),
-
     menuItems: z.array(
       z.object({
         name: z.string().min(1, { message: "Item name is required" }),
         price: priceValidation,
+        description: z.string().optional(),
+        imageFile: z
+          .instanceof(File, { message: "Image file is required" })
+          .optional(), // Changed to optional
       })
     ),
-    imageUrl: z.string().optional(),
     imageFile: z
       .instanceof(File, { message: "Image file is required" })
       .optional(),
   })
-  .refine((data) => data.imageUrl || data.imageFile, {
-    message: "Either image url or image file must be provided",
+  .refine((data) => data.imageFile, {
+    message: "An image file must be provided",
     path: ["imageFile"],
   });
 
@@ -88,7 +86,9 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       cuisines: [],
-      menuItems: [{ name: "", price: 0 }],
+      menuItems: [
+        { name: "", price: 0, description: "", imageFile: undefined },
+      ], // Updated default
     },
   });
 
@@ -113,9 +113,8 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     form.reset(updatedRestaurant);
   }, [form, restaurant]);
 
-  const onsubmit = (formDataJson: RestaurantFormData) => {
-    // convert formDataJson(a plain old js object) to a new FormData object(multipart/form-data object)
-
+  const onSubmit = (formDataJson: RestaurantFormData) => {
+    // Convert formDataJson to a new FormData object
     const formData = new FormData();
     formData.append("name", formDataJson.name);
     formData.append("locality", formDataJson.locality);
@@ -124,26 +123,42 @@ const ManageRestaurantForm = ({ onSave, isLoading, restaurant }: Props) => {
     formData.append("costForTwo", formDataJson.costForTwo);
     formData.append("deliveryPrice", formDataJson.deliveryPrice.toString());
     formData.append("deliveryTime", formDataJson.deliveryTime.toString());
+
+    // Append cuisines
     formDataJson.cuisines.forEach((cuisine, i) => {
       formData.append(`cuisines[${i}]`, cuisine);
     });
+
+    // Handle menu items
     formDataJson.menuItems.forEach((menu, i) => {
       formData.append(`menuItems[${i}][name]`, menu.name);
       formData.append(`menuItems[${i}][price]`, menu.price.toString());
+      formData.append(`menuItems[${i}][description]`, menu.description || " ");
+
+      // Append the single image file for the menu item
+      if (menu.imageFile) {
+        formData.append(`menuItems[${i}][image]`, menu.imageFile);
+      }
     });
+
+    // Append the restaurant image file if it exists
     if (formDataJson.imageFile) {
       formData.append(`imageFile`, formDataJson.imageFile);
     }
-    if (formDataJson?.avgRating)
-      formData.append("avgRating", formDataJson.avgRating.toString());
 
+    // Append the average rating if it exists
+    if (formDataJson?.avgRating) {
+      formData.append("avgRating", formDataJson.avgRating.toString());
+    }
+
+    // Call the onSave function with the FormData object
     onSave(formData);
   };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onsubmit)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 bg-gray-100 md:p-10 p-4 rounded-lg"
       >
         <DetailsSection />

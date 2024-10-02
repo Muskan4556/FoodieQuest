@@ -19,7 +19,7 @@ const ImageSection = () => {
     <div className="space-y-2">
       <div>
         <h2 className="font-bold text-2xl">Images</h2>
-        <FormDescription className="text-xs tracking-tight  md:text-base">
+        <FormDescription className=" tracking-tight">
           Add a image that will be displayed on your restaurant listing in the
           search results. Adding a new image will override the existing one.
         </FormDescription>
