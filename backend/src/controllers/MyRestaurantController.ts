@@ -27,8 +27,8 @@ const uploadImage = async (file: Express.Multer.File) => {
 
 export const createMyRestaurant = async (req: Request, res: Response) => {
   try {
-    console.log("Files:", req.files); // Log uploaded files
-    console.log("Body:", req.body); // Log form data
+    // console.log("Files:", req.files); // Log uploaded files
+    // console.log("Body:", req.body); // Log form data
 
     const existingRestaurant = await Restaurant.findOne({ user: req.userId });
     if (existingRestaurant) {
@@ -93,16 +93,37 @@ export const getMyRestaurant = async (req: Request, res: Response) => {
 };
 
 export const updateMyRestaurant = async (req: Request, res: Response) => {
+  const {
+    name,
+    locality,
+    areaName,
+    city,
+    costForTwo,
+    deliveryPrice,
+    deliveryTime,
+    avgRating,
+    cuisines,
+  } = req.body;
   try {
-    console.log("Files:", req.files); // Log uploaded files
-    console.log("Body:", req.body); // Log form data
+    // console.log("Files:", req.files); // Log uploaded files
+    // console.log("Body:", req.body); // Log form data
 
     const restaurant = await Restaurant.findOne({ user: req.userId });
     if (!restaurant)
       return res.status(404).json({ message: "Restaurant not found" });
 
+    restaurant.name = name || restaurant.name;
+    restaurant.locality = locality || restaurant.locality;
+    restaurant.areaName = areaName || restaurant.areaName;
+    restaurant.city = city || restaurant.city;
+    restaurant.costForTwo = costForTwo || restaurant.costForTwo;
+    restaurant.deliveryPrice = deliveryPrice || restaurant.deliveryPrice;
+    restaurant.deliveryTime = deliveryTime || restaurant.deliveryTime;
+    restaurant.avgRating = avgRating || restaurant.avgRating;
+    restaurant.cuisines = cuisines || restaurant.cuisines;
+
     // Update restaurant fields
-    Object.assign(restaurant, req.body);
+    // Object.assign(restaurant, req.body);
 
     // Extract the uploaded files
     const files = req.files as MulterFiles;
@@ -129,7 +150,8 @@ export const updateMyRestaurant = async (req: Request, res: Response) => {
           price: item.price || restaurant.menuItems[index]?.price,
           description:
             item.description || restaurant.menuItems[index]?.description,
-          imageUrl: menuImageUrl || restaurant.menuItems[index]?.imageUrl, // Use the newly uploaded or retained image URL
+          // imageUrl: menuImage? await uploadImage(menuImage) : restaurant.menuItems[index]?.imageUrl,
+          imageUrl: menuImageUrl || restaurant.menuItems[index]?.imageUrl,
         } as MenuItem;
       })
     );

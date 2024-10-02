@@ -92,9 +92,10 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
               <Input
                 type="file"
                 accept=".jpg, .jpeg, .png"
-                onChange={(e) =>
-                  field.onChange(e.target.files ? e.target.files[0] : undefined)
-                }
+                onChange={(e) => {
+                  const file = e.target.files ? e.target.files[0] : undefined;
+                  field.onChange(file); // Call field.onChange with the file
+              }}
                 className="bg-white"
               />
             </FormControl>

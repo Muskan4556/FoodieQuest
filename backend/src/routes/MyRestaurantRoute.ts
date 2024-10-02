@@ -26,8 +26,21 @@ router.post(
   "/",
   upload.fields([
     { name: "imageFile" },
-    { name: "menuItems[0][image]", maxCount: 1 }, // For the first menu item
-    { name: "menuItems[1][image]", maxCount: 1 }, // For the second menu item, add more as needed
+    { name: "menuItems[0][image]", maxCount: 1 },
+    { name: "menuItems[1][image]", maxCount: 1 },
+    { name: "menuItems[2][image]", maxCount: 1 },
+    { name: "menuItems[3][image]", maxCount: 1 },
+    { name: "menuItems[4][image]", maxCount: 1 },
+    { name: "menuItems[5][image]", maxCount: 1 },
+    { name: "menuItems[6][image]", maxCount: 1 },
+    { name: "menuItems[7][image]", maxCount: 1 },
+    { name: "menuItems[8][image]", maxCount: 1 },
+    { name: "menuItems[9][image]", maxCount: 1 },
+    { name: "menuItems[10][image]", maxCount: 1 },
+    { name: "menuItems[11][image]", maxCount: 1 },
+    { name: "menuItems[12][image]", maxCount: 1 },
+    { name: "menuItems[13][image]", maxCount: 1 },
+    { name: "menuItems[14][image]", maxCount: 1 },
   ]),
 
   validateMyRestaurantRequest,
@@ -40,8 +53,21 @@ router.put(
   "/",
   upload.fields([
     { name: "imageFile" },
-    { name: "menuItems[0][image]", maxCount: 1 }, // For the first menu item
-    { name: "menuItems[1][image]", maxCount: 1 }, // For the second menu item, add more as needed
+    { name: "menuItems[0][image]", maxCount: 1 },
+    { name: "menuItems[1][image]", maxCount: 1 },
+    { name: "menuItems[2][image]", maxCount: 1 },
+    { name: "menuItems[3][image]", maxCount: 1 },
+    { name: "menuItems[4][image]", maxCount: 1 },
+    { name: "menuItems[5][image]", maxCount: 1 },
+    { name: "menuItems[6][image]", maxCount: 1 },
+    { name: "menuItems[7][image]", maxCount: 1 },
+    { name: "menuItems[8][image]", maxCount: 1 },
+    { name: "menuItems[9][image]", maxCount: 1 },
+    { name: "menuItems[10][image]", maxCount: 1 },
+    { name: "menuItems[11][image]", maxCount: 1 },
+    { name: "menuItems[12][image]", maxCount: 1 },
+    { name: "menuItems[13][image]", maxCount: 1 },
+    { name: "menuItems[14][image]", maxCount: 1 },
   ]),
   validateMyRestaurantRequest,
   jwtCheck,
