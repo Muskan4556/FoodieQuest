@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   FormControl,
   FormField,
@@ -47,7 +48,7 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
         control={control}
         name={`menuItems.${index}.price`}
         render={({ field }) => (
-          <FormItem className="md:w-[15%] w-[100%]">
+          <FormItem className="md:w-[10%] w-[100%]">
             <FormLabel className="flex items-center gap-1 whitespace-nowrap">
               Price (Rs.) <FormMessage />
             </FormLabel>
@@ -76,10 +77,10 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
         )}
       />
       {imagePreviewUrl && (
-        <div className="h-12 w-12">
+        <div className="h-16 w-h-16">
           <LazyLoadImage
             src={imagePreviewUrl} // Use the determined preview URL
-            className="rounded-md object-cover h-full w-full"
+            className="object-cover h-full w-full"
           />
         </div>
       )}
@@ -105,10 +106,18 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
       />
       <div
         onClick={removeMenuItem}
-        className="cursor-pointer text-red-600 hover:text-red-500"
+        className="cursor-pointer text-red-600 hover:text-red-500 hidden md:block"
       >
         <Trash2 className="md:-mt-8" />
       </div>
+      <Button
+        variant="outline"
+        type="button"
+        onClick={removeMenuItem}
+        className="text-white bg-red-600 hover:bg-red-500 hover:text-white max-h-fit md:hidden"
+      >
+        Remove
+      </Button>
     </div>
   );
 };

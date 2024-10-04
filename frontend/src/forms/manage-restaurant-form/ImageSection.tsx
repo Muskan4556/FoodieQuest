@@ -14,6 +14,10 @@ const ImageSection = () => {
   const { control, watch } = useFormContext();
 
   const existingImageUrl = watch("imageUrl");
+  const existingImageFile = watch("imageFile");
+  const imagePreviewUrl = existingImageFile
+  ? URL.createObjectURL(existingImageFile) // Object URL for file input
+  : existingImageUrl; // Use backend image URL if available
 
   return (
     <div className="space-y-2">
@@ -25,10 +29,10 @@ const ImageSection = () => {
         </FormDescription>
       </div>
       <div className="flex flex-col gap-8 md:w-[50%]">
-        {existingImageUrl && (
+        {imagePreviewUrl && (
           <AspectRatio ratio={16 / 9}>
             <LazyLoadImage
-              src={existingImageUrl}
+              src={imagePreviewUrl}
               className="rounded-md object-cover h-full w-full "
             ></LazyLoadImage>
           </AspectRatio>
