@@ -13,7 +13,7 @@ export type MenuItem = {
   _id: string;
   name: string;
   price: number;
-  description: string
+  description: string;
   imageUrl: string;
 };
 
@@ -33,4 +33,13 @@ export type Restaurant = {
   imageUrl: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type RestaurantSearchResponse = {
+  data: Restaurant[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+  };
 };

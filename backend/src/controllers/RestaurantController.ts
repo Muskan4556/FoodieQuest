@@ -13,7 +13,7 @@ export const searchRestaurant = async (req: Request, res: Response) => {
 
     let query: any = {};
     // query["city"] dynamically assigns the key "city" to the query object.
-    query["city"] = new RegExp(city, "i");
+    query["city"] = new RegExp(`^${city.trim()}$`, "i");
     const cityCheck = await Restaurant.countDocuments(query); // return number
     if (cityCheck === 0)
       return res.status(404).json({
@@ -47,7 +47,7 @@ export const searchRestaurant = async (req: Request, res: Response) => {
     const skip = (page - 1) * pageSize; // skip number of restaurant eg. page=2 skip=10 then - the first 10 records will be skipped
     // sortOption = "updatedAt"
     const restaurants = await Restaurant.find(query)
-      .sort({ [sortOption]: -1 }) // -1 indicates descending order.
+      .sort({ [sortOption]: 1 }) // -1 indicates descending order.
       .skip(skip)
       .limit(pageSize)
       .lean(); //  convert the resulting documents into plain JavaScript objects instead of Mongoose documents.
