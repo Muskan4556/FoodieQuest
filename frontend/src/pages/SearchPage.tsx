@@ -9,6 +9,8 @@ import PaginationSelector from "@/components/PaginationSelector";
 import Cuisines from "@/components/Cuisines";
 import SortOption from "@/components/SortOption";
 import { Button } from "@/components/ui/button";
+import BreadCrumb from "@/components/Bread";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 export type SearchState = {
   searchQuery: string;
@@ -80,7 +82,8 @@ const SearchPage = () => {
       return {
         ...prev,
         selectedCuisines: [],
-        sortOption: "",
+        sortOption: "bestMatch",
+        page: 1,
       };
     });
   };
@@ -98,9 +101,12 @@ const SearchPage = () => {
   }
 
   return (
-    <div className="container mx-auto  ">
-      <div className="mb-8 flex items-center justify-center">
-        <div className="md:w-[80%]">
+    <div className="container mx-auto">
+      <div className="-mt-4 mx-1">
+        <BreadCrumb city={city} />
+      </div>
+      <div className="mb-8 mt-4 flex items-center justify-center">
+        <div className="md:w-[80%] w-[100%] mx-1 md:mx-0">
           <SearchBar
             searchQuery={searchState.searchQuery}
             onSubmit={handleSearchQuery}
@@ -109,9 +115,9 @@ const SearchPage = () => {
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-2 items-baseline  ml-2 md:ml-0 font-semibold text-gray-800">
+      <div className="flex flex-col md:flex-row gap-2 items-baseline  ml-2 md:ml-0 font-semibold text-gray-800 tracking-tight">
         <h2 className="md:text-2xl text-xl">
-          Top restaurants in {city.charAt(0).toUpperCase() + city.slice(1)}
+          Top restaurants in {capitalizeFirstLetter(city)}
         </h2>
         <div className="font-semibold text-sm underline cursor-pointer text-blue-700 -mt-1 md:mt-0">
           <Link to={`/`}>Change Location</Link>{" "}

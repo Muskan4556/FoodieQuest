@@ -48,14 +48,14 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={`flex items-center flex-1 md:gap-3 justify-between flex-row border-2 rounded-lg md:p-3 px-2 py-1 mx-5 ${
+        className={`form-container flex items-center flex-1 md:gap-3 justify-between flex-row border-2 rounded-lg md:p-3 px-2 py-1    ${
           form.formState.errors.searchQuery && "border-red-500"
         } `}
       >
         <Search
           strokeWidth={2.5}
           //   size={30}
-          className="md:ml-1 text-orange-500 h-4  md:h-[1.85rem] md:w-[1.85rem]"
+          className="md:ml-1 text-orange-500 h-4  md:h-[1.85rem] md:w-[1.85rem] "
         />
         <FormField
           control={form.control}
@@ -65,7 +65,7 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
               <FormControl>
                 <Input
                   {...field}
-                  className="border-none shadow-none md:text-xl text-md focus-visible:ring-0 focus placeholder:text-sm md:placeholder:text-lg "
+                  className="border-none shadow-none md:text-xl text-md focus-visible:ring-0 focus placeholder:text-md md:placeholder:text-xl placeholder:font-medium placeholder:tracking-tight "
                   placeholder={placeholder}
                 />
               </FormControl>
@@ -77,9 +77,9 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
           onClick={handleReset}
           type="button"
           variant="ghost"
-          className="rounded-lg text-orange-500 hover:bg-white hover:underline hover:text-orange-500 text-xs hidden"
+          className="rounded-lg text-orange-500 hover:bg-white hover:underline hover:text-orange-500 md:text-base hidden md:block text-xs "
         >
-          Reset
+          Clear
         </Button>
       </form>
     </Form>

@@ -9,7 +9,10 @@ type Props = {
 
 const RestaurantCard = ({ restaurant }: Props) => {
   return (
-    <Link to={`/details/${restaurant._id}`} className="w-[100%] md:w-[20rem] lg:w-[22rem]">
+    <Link
+      to={`/details/${restaurant._id}`}
+      className="w-[100%] md:w-[20rem] lg:w-[22rem]"
+    >
       <div
         key={restaurant._id}
         className="border border-gray-300 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 cursor-pointer"
@@ -19,30 +22,34 @@ const RestaurantCard = ({ restaurant }: Props) => {
             src={restaurant.imageUrl}
             alt={`restaurantImg - ${restaurant.name}`}
             className="object-cover h-full w-full"
-            
           />
         </div>
-        <div className="px-4 py-3 -mt-3">
-          <div className="mt-2 font-semibold text-lg text-gray-900">
+        <div className="px-4 pt-3 -mt-3 pb-4">
+          <div className="mt-2 font-semibold text-lg text-gray-900 tracking-tight">
             {restaurant.name}
           </div>
           <div className="flex items-center mt-1">
             <LazyLoadImage
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDvvIxXy4-x8TSIlWn-znOZirHvrsErjpxQw&s"
+              src="https://img.icons8.com/?size=100&id=63454&format=png&color=20953c"
               className="w-4 h-4 object-cover"
               alt="Rating Icon"
             />
-            <div className="ml-1 text-gray-700 flex">
+            <div className="ml-1 font-medium flex">
               <div>{restaurant?.avgRating ? restaurant.avgRating : "--"}</div>
               {/* {" ."} */}
               <span>
                 <Dot />
               </span>
             </div>
-            <div className=" text-gray-700">{restaurant.deliveryTime} mins</div>
+            <div className=" font-medium ">{restaurant.deliveryTime} mins</div>
           </div>
-          <div className="font-medium text-gray-700 ">
-            <div className="tracking-tight">{restaurant.costForTwo} </div>
+          <div className=" text-black/60 font-medium ">
+            <div className="tracking-tight">
+              ₹{restaurant.costForTwo} for two{" "}
+            </div>
+          </div>
+          <div className=" text-black/60 font-medium  -mt- ">
+            <div className="tracking-tight">{restaurant.areaName}</div>
           </div>
           <div className="mt-2">
             {restaurant.cuisines.length > 4 ? (

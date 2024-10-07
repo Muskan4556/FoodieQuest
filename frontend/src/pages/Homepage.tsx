@@ -19,9 +19,14 @@ const Homepage = () => {
         <h1 className="font-bold md:text-5xl text-3xl px-3 md:px-0 tracking-tight text-orange-600">
           Discover the best food & drinks
         </h1>
-        <div className="md:text-xl text-xl">Food is one click away!</div>
-
-        <SearchBar searchQuery="" placeholder="Search by city" onSubmit={handleSearchSubmit} />
+        <div className="md:text-xl text-xl tracking-tight text-black/70 font-medium">Food is one click away!</div>
+        <div className="md:mx-12 mx-6">
+          <SearchBar
+            searchQuery=""
+            placeholder="Search by city"
+            onSubmit={handleSearchSubmit}
+          />
+        </div>
       </div>
       <div className="grid md:grid-cols-2 gap-5">
         <LazyLoadImage effect="blur" src={landing} alt="landing image" />

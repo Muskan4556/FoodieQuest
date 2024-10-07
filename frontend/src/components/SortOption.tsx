@@ -15,7 +15,8 @@ type Props = {
 const SORT_OPTIONS = [
   { label: "Best match", value: "bestMatch" },
   { label: "Delivery time", value: "deliveryTime" },
-  { label: "Cost for two", value: "costForTwo" },
+  { label: "Rating", value: "avgRating" },
+  { label: "Cost for Two", value: "costForTwo" },
 ];
 
 const SortOption = ({ selectedSortOption, onChange }: Props) => {
@@ -28,8 +29,10 @@ const SortOption = ({ selectedSortOption, onChange }: Props) => {
         <DropdownMenuTrigger>
           <Button
             variant="outline"
-            className={`flex gap-1 ${
-              selectedSortOption ? "border-2 border-orange-500" : ""
+            className={`flex gap-1  ${
+              selectedSortOption && selectedSortOption !== "bestMatch"
+                ? "border-2 border-orange-500"
+                : ""
             }`}
           >
             <ArrowUpDown strokeWidth={2} size={15} />
@@ -37,13 +40,13 @@ const SortOption = ({ selectedSortOption, onChange }: Props) => {
             <ChevronDown strokeWidth={2} size={15} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className=" w-52 cursor-pointer ml-0 overflow-y-auto">
+        <DropdownMenuContent className=" md:w-52 w-48 cursor-pointer md:ml-2 overflow-y-auto font-medium">
           {SORT_OPTIONS.map((option) => {
             return (
               <DropdownMenuItem
                 key={option.value}
                 onClick={() => onChange(option.value)}
-                className={`flex gap-1 cursor-pointer items-center hover:bg-gray-100`}
+                className={`flex gap-1 cursor-pointer items-center hover:bg-gray-100 text-base`}
               >
                 {option.label}
               </DropdownMenuItem>

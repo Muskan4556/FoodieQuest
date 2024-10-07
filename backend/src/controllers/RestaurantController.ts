@@ -1,5 +1,22 @@
 import { Request, Response } from "express";
 import Restaurant from "../models/restaurant";
+import { SortOrder } from "mongoose";
+
+export const getRestaurantInfo = async (req: Request, res: Response) => {
+  try {
+    const resId = req.params.restaurantId;
+    const restaurant = await Restaurant.findById(resId);
+    if (!restaurant) {
+      return res.status(404).json({ message: "Restaurant not found" });
+    }
+    return res.json(restaurant);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+};
 
 export const searchRestaurant = async (req: Request, res: Response) => {
   try {
@@ -9,6 +26,7 @@ export const searchRestaurant = async (req: Request, res: Response) => {
     const searchQuery = (req.query.searchQuery as string) || ""; // for restaurant name or cuisines
     const selectedCuisines = (req.query.selectedCuisines as string) || ""; // comma separated string
     const sortOption = (req.query.sortOption as string) || "updatedAt";
+
     const page = parseInt(req.query.page as string) || 1;
 
     let query: any = {};
@@ -43,11 +61,21 @@ export const searchRestaurant = async (req: Request, res: Response) => {
       ];
     }
 
+    const sortingOptions: { [key: string]: SortOrder } = {
+      deliveryTime: 1,
+      updatedAt: -1,
+      avgRating: -1,
+      costForTwo: 1,
+    };
+
+    const sortValue =
+      sortingOptions[sortOption] !== undefined ? sortingOptions[sortOption] : 1;
+
     const pageSize = 10; // number of restaurant will be displayed
     const skip = (page - 1) * pageSize; // skip number of restaurant eg. page=2 skip=10 then - the first 10 records will be skipped
     // sortOption = "updatedAt"
     const restaurants = await Restaurant.find(query)
-      .sort({ [sortOption]: 1 }) // -1 indicates descending order.
+      .sort({ [sortOption]: sortValue as SortOrder }) // -1 indicates descending order.
       .skip(skip)
       .limit(pageSize)
       .lean(); //  convert the resulting documents into plain JavaScript objects instead of Mongoose documents.

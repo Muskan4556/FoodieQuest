@@ -51,15 +51,13 @@ const Cuisines = ({ onChange, selectedCuisines }: Props) => {
             </Button>
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className=" h-40 w-40 ml-14 overflow-y-auto">
+        <DropdownMenuContent className=" h-40 w-40 md:ml-14 ml-6 overflow-y-auto">
           {cuisinesList.map((cuisine) => {
             const isSelected = selectedCuisines?.includes(cuisine);
             return (
               <div
                 key={cuisine}
-                className={`flex gap-1 items-center hover:bg-gray-100
-              ${isSelected && "border border-green-500 rounded-md"}
-              `}
+                className={`flex gap-1 items-center hover:bg-gray-100`}
               >
                 {isSelected && (
                   <span className="ml-2">
@@ -72,7 +70,7 @@ const Cuisines = ({ onChange, selectedCuisines }: Props) => {
                   </span>
                 )}
 
-                <DropdownMenuItem className=" w-full ">
+                <DropdownMenuItem className="w-full">
                   <input
                     id={`cuisine_${cuisine}`}
                     type="checkbox"
@@ -82,7 +80,9 @@ const Cuisines = ({ onChange, selectedCuisines }: Props) => {
                     onChange={handleCuisineChange}
                   />
                   <Label
-                    className="cursor-pointer font-normal"
+                    className={`cursor-pointer text-base  font-medium ${
+                      isSelected && " text-sm"
+                    }`}
                     htmlFor={`cuisine_${cuisine}`}
                   >
                     {cuisine}{" "}

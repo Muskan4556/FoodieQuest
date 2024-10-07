@@ -27,7 +27,8 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem}
+    --radius: 0.5rem;
+  }
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -52,7 +53,8 @@
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%}
+    --chart-5: 340 75% 55%;
+  }
 }
 @layer base {
   * {
@@ -77,4 +79,15 @@
   100% {
     background-position: 1200px 0;
   }
+}
+
+.form-container {
+  transition: all 0.3s ease;
+}
+
+.form-container:focus-within {
+  backdrop-filter: blur(30px); /* Subtle blur for the glass effect */
+  background-color: rgba(255, 255, 255, 0.25); /* Lighter background on focus */
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.8); /* Orange glow around the form */
+  border: 2px solid rgba(255, 165, 0, 0.8); /* Border color on focus */
 }
