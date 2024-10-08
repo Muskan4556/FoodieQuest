@@ -10,6 +10,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Separator } from "./ui/separator";
 import { toast } from "sonner";
+import { capitalizeFirstLetter } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const UsernameMenu = () => {
   const { user, logout } = useAuth0();
@@ -22,16 +24,15 @@ const UsernameMenu = () => {
       }}
     >
       <DropdownMenuTrigger className="flex items-center px-3 font-bold hover:text-orange-500 gap-2">
-        <img
-          src={user?.picture}
-          alt="user image"
-          className="h-10 w-10 rounded-full"
-        />
-        {user?.nickname?.toUpperCase()}
+        <Avatar>
+          <AvatarImage src={user?.picture} />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        {user?.nickname && capitalizeFirstLetter(user?.nickname).split(/\d/)[0]}
         {isOpen ? <ChevronUp /> : <ChevronDown />}
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem >
+        <DropdownMenuItem>
           <Link
             to="/user-profile"
             className=" font-medium tracking-tight text-base text-black/70 hover:text-orange-500"

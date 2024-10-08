@@ -7,6 +7,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
 import RestaurantInfo from "./pages/RestaurantDetails";
+import Cart from "./components/CartComponent";
 
 const AppRoutes = () => {
   return (
@@ -54,6 +55,14 @@ const AppRoutes = () => {
           element={
             <Layout>
               <RestaurantInfo />
+            </Layout>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <Layout>
+              <Cart />{" "}
             </Layout>
           }
         />

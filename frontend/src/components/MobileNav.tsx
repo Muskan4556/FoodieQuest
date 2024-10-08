@@ -12,6 +12,8 @@ import { Button } from "./ui/button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { capitalizeFirstLetter } from "@/lib/utils";
 
 const MobileNav = () => {
   const { loginWithRedirect, isAuthenticated, user, logout } = useAuth0();
@@ -38,14 +40,13 @@ const MobileNav = () => {
               <div className="flex flex-col items-start mt-4 w-full">
                 <Link to="/user-profile">
                   <div className="flex">
-                    <img
-                      src={user?.picture}
-                      alt="user image"
-                      className="h-12 w-12 rounded-full"
-                    />
+                    <Avatar>
+                      <AvatarImage src={user?.picture} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
                     <div className="flex flex-col items-start ml-4">
                       <div className="text-black font-bold text-lg tracking-tight">
-                        {user?.nickname?.toUpperCase()}
+                      {user?.nickname && capitalizeFirstLetter(user?.nickname).split(/\d/)[0]}
                       </div>
                       <div className="text-black font-medium tracking-tighter">
                         {user?.email}
@@ -53,8 +54,14 @@ const MobileNav = () => {
                     </div>
                   </div>
                 </Link>
-                <Link to="manage-restaurant" className=" flex justify-start mt-6 w-full">
-                  <Button variant="outline" className="flex-1 font-bold hover:text-orange-500 ">
+                <Link
+                  to="manage-restaurant"
+                  className=" flex justify-start mt-6 w-full"
+                >
+                  <Button
+                    variant="outline"
+                    className="flex-1 font-bold hover:text-orange-500 "
+                  >
                     Manage Restaurant
                   </Button>
                 </Link>

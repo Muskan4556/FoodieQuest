@@ -6,6 +6,7 @@ import AppRoutes from "./AppRoutes";
 import Auth0ProviderWithNavigate from "./auth/Auth0ProviderWithNavigate";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "sonner";
+import { CartProvider } from "./context-api/CartContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,15 +20,17 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Router>
       <QueryClientProvider client={queryClient}>
-        <Auth0ProviderWithNavigate>
-          <AppRoutes />
-          <Toaster
-            visibleToasts={1}
-            position="top-right"
-            richColors
-            duration={2000}
-          />
-        </Auth0ProviderWithNavigate>
+        <CartProvider>
+          <Auth0ProviderWithNavigate>
+            <AppRoutes />
+            <Toaster
+              visibleToasts={1}
+              position="top-right"
+              richColors
+              duration={2000}
+            />
+          </Auth0ProviderWithNavigate>
+        </CartProvider>
       </QueryClientProvider>
     </Router>
   </StrictMode>

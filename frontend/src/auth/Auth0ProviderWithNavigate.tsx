@@ -1,13 +1,10 @@
-import { Auth0Provider } from "@auth0/auth0-react";
+import sessionStorageCache from "@/session/sessionStorageCache";
+import { AppState, Auth0Provider } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 
 type Props = {
   children: React.ReactNode;
 };
-
-interface AppState {
-  returnTo?: string; // optional property
-}
 
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const navigate = useNavigate();
@@ -35,8 +32,12 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
         audience,
       }}
       onRedirectCallback={onRedirectCallback}
-      useRefreshTokens={true} // Use refresh tokens
-      cacheLocation="localstorage" // Persist across page refreshes
+      cache={{
+        get: sessionStorageCache.get,
+        set: sessionStorageCache.set,
+        remove: sessionStorageCache.remove,
+      }}
+      useRefreshTokens={true} // Enable refresh tokens
     >
       {children}
     </Auth0Provider>
