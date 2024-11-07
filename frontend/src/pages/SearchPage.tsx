@@ -1,6 +1,6 @@
 import { useSearchRestaurant } from "@/api/RestaurantApi";
 import Loader from "@/components/Loader";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import RestaurantCard from "@/components/RestaurantCard";
 import { useState } from "react";
@@ -11,6 +11,9 @@ import SortOption from "@/components/SortOption";
 import { Button } from "@/components/ui/button";
 import BreadCrumb from "@/components/Bread";
 import { capitalizeFirstLetter } from "@/lib/utils";
+import { useCart } from "@/context-api/useCart";
+import { ChevronRight } from "lucide-react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 export type SearchState = {
   searchQuery: string;
@@ -20,6 +23,16 @@ export type SearchState = {
 };
 
 const SearchPage = () => {
+  const { state } = useCart();
+  const { restaurant, cartItems } = state;
+  const navigate = useNavigate();
+  const calculateTotal = () => {
+    const itemTotal = cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
+    return itemTotal;
+  };
   const [searchState, setSearchState] = useState<SearchState>({
     searchQuery: "",
     page: 1,
@@ -153,6 +166,47 @@ const SearchPage = () => {
           restaurantCount={searchRestaurant.data.length}
         />
       </div>
+      {cartItems.length > 0 && restaurant && (
+        <div className="sticky bottom-4 bg-gray-200 border-2 border-gray-300 shadow-lg flex justify-between items-center md:p-4 p-2 rounded-lg">
+          <div className="flex gap-4">
+            <LazyLoadImage
+              src={restaurant.imageUrl}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <Link
+              to={`/details/${restaurant._id}`}
+              className="text-black font-semibold text-normal md:text-lg underline decoration-gray-500 md:no-underline  hover:underline"
+            >
+              {restaurant.name}
+            </Link>
+          </div>
+
+          <div
+            onClick={() => navigate("/cart")}
+            className="flex cursor-pointer gap-2"
+          >
+            <div className="bg-green-600 md:px-4 md:py-3 p-2 border-none shadow-md rounded-md text-white">
+              <div className="flex flex-col md:flex-row gap-2 text-xs md:text-base">
+                <div className="flex justify-center">
+                  <span className="font-medium mr-1">
+                    {cartItems.length} item |
+                  </span>
+                  <span className="font-medium"> ₹{calculateTotal()}</span>
+                </div>
+                <div className="flex justify-center">
+                  <span className="text-white font-semibold hover:underline ml-4 whitespace-nowrap">
+                    View Cart
+                  </span>
+                  <ChevronRight
+                    strokeWidth={2.5}
+                    className="text-white md:h-auto h-4"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

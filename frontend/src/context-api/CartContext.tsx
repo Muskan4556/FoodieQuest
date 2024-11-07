@@ -1,6 +1,5 @@
-// CartContext.tsx
 import React, { createContext, useReducer, useEffect, ReactNode } from "react";
-import { Restaurant } from "@/types"; // Adjust the import path as necessary
+import { Restaurant } from "@/types"; 
 
 export type Cart = {
   _id: string;

@@ -8,9 +8,18 @@ import { Separator } from "./ui/separator";
 import { Link } from "react-router-dom";
 import CheckoutButton from "./CheckoutButton";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
+import { useCreateCheckoutSession } from "@/api/OrderApi";
+import { useAuth0 } from "@auth0/auth0-react";
 const CartComponent = () => {
   const { state, dispatch } = useCart();
   const { cartItems, restaurant } = state;
+
+  const { createCheckoutSession, isLoading: isCheckoutLoading } =
+    useCreateCheckoutSession();
+
+  const RAZORPAY_API_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const { getAccessTokenSilently } = useAuth0();
 
   const addToCart = (item: Cart, restaurant: Restaurant) => {
     dispatch({
@@ -51,12 +60,91 @@ const CartComponent = () => {
     if (restaurant) return itemTotal + restaurant?.deliveryPrice;
   };
 
-  const handleCheckOut = (userFormData: UserFormData) => {
+  const handleCheckOut = async (userFormData: UserFormData) => {
+    if (!restaurant) return;
+
     console.log("userFormData: ", userFormData);
+    const checkoutData = {
+      cartItems: cartItems.map((cartItem) => ({
+        menuItemId: cartItem._id,
+        name: cartItem.name,
+        quantity: cartItem.quantity,
+      })),
+      deliveryDetail: {
+        email: userFormData.email as string,
+        name: userFormData.name,
+        address: userFormData.address,
+        city: userFormData.city,
+      },
+      restaurantId: restaurant?._id,
+    };
+    const data = await createCheckoutSession(checkoutData);
+    console.log(data);
+
+    // Initiate Razorpay checkout here
+    const options = {
+      key: RAZORPAY_API_KEY,
+      amount: data.order.amount, // The amount from backend (in paise)
+      currency: data.order.currency,
+      order_id: data.order.id, // Order ID from backend
+      name: "Default",
+      description: "Payment for your order",
+      handler: async function (response: Razorpay.PaymentResponse) {
+        const accessToken = await getAccessTokenSilently();
+        const body = {
+          ...response,
+        };
+        const validateRes = await fetch(
+          `${API_BASE_URL}/api/order/checkout-order/validate`,
+          {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const jsonRes = await validateRes.json();
+
+        // Check if payment was successfully validated and redirect
+        if (jsonRes.message === "Success") {
+          // Redirect user to a success page (can be any path)
+          window.location.href = "/search/Patna"; // Using window.location for redirection
+        } else {
+          window.location.href = `/details/${restaurant._id}`;
+        }
+      },
+      prefill: {
+        name: "Muskan",
+        email: "muskan123@gmail.com",
+        contact: "9999999999",
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const razorpay = new window.Razorpay(options);
+    razorpay.open();
   };
 
-  if (!restaurant) {
-    return <div>Your cart is empty</div>;
+  if (!restaurant || cartItems.length === 0) {
+    return (
+      <div>
+        Your cart is empty.{" "}
+        <Link
+          to={`/search/patna`}
+          className="text-blue-700 underline font-semibold"
+        >
+          Explore more restaurants
+        </Link>{" "}
+      </div>
+    );
   }
 
   return (
@@ -143,6 +231,7 @@ const CartComponent = () => {
         <CheckoutButton
           disabled={cartItems.length === 0}
           onCheckOut={handleCheckOut}
+          isLoading={isCheckoutLoading}
         />
       </div>
     </div>

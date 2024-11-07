@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import Restaurant from "../models/restaurant";
+import Restaurant, { MenuItemType } from "../models/restaurant";
 import cloudinary from "cloudinary";
 import mongoose, { Document } from "mongoose";
 
-interface MenuItem extends Document {
-  name: string;
-  price: number;
-  description?: string;
-  imageUrl: string;
-}
+// interface MenuItem extends Document {
+//   name: string;
+//   price: number;
+//   description?: string;
+//   imageUrl: string;
+// }
 
 interface MulterFiles {
   [key: string]: Express.Multer.File[]; // Allows for dynamic keys
@@ -47,7 +47,7 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
     if (typeof imageUrl === "string") restaurant.imageUrl = imageUrl;
     restaurant.user = new mongoose.Types.ObjectId(req.userId);
 
-    const menuItems: MenuItem[] = await Promise.all(
+    const menuItems: MenuItemType[] = await Promise.all(
       req.body.menuItems.map(async (item: any, index: number) => {
         // Use the defined interface to access menu item images
         const menuImage = files[`menuItems[${index}][image]`]?.[0]; // Access the menu image if it exists
@@ -64,11 +64,11 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
           price: item.price,
           description: item.description,
           imageUrl: menuImageUrl, // Store the URL of the uploaded image, or null if not uploaded
-        } as MenuItem;
+        } as MenuItemType;
       })
     );
 
-    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItem>;
+    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItemType>;
     await restaurant.save();
 
     res.status(201).send(restaurant);
@@ -133,7 +133,7 @@ export const updateMyRestaurant = async (req: Request, res: Response) => {
       : restaurant.imageUrl; // Retain the existing image URL if no new image is uploaded
     restaurant.imageUrl = imageUrl;
 
-    const menuItems: MenuItem[] = await Promise.all(
+    const menuItems: MenuItemType[] = await Promise.all(
       req.body.menuItems.map(async (item: any, index: number) => {
         // Access the menu image if it exists
         const menuImage = files[`menuItems[${index}][image]`]?.[0];
@@ -152,11 +152,11 @@ export const updateMyRestaurant = async (req: Request, res: Response) => {
             item.description || restaurant.menuItems[index]?.description,
           // imageUrl: menuImage? await uploadImage(menuImage) : restaurant.menuItems[index]?.imageUrl,
           imageUrl: menuImageUrl || restaurant.menuItems[index]?.imageUrl,
-        } as MenuItem;
+        } as MenuItemType;
       })
     );
 
-    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItem>;
+    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItemType>;
     await restaurant.save();
 
     res.status(200).send(restaurant);
