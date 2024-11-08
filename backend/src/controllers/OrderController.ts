@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Razorpay from "razorpay";
 import Restaurant, { MenuItemType } from "../models/restaurant";
 import crypto from "node:crypto";
+import Order from "../models/order";
 
 if (!process.env.RAZORPAY_API_KEY || !process.env.RAZORPAY_API_SECRET) {
   throw new Error(
@@ -66,8 +67,11 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       // payment_capture: 1, // Auto-capture payment after successful payment
       // line_items: lineItems, // Razorpay line items
       notes: {
-        cartDetails: JSON.stringify(lineItems), // Optional metadata
-        deliveryPrice: restaurant.deliveryPrice,
+        // lineItem: JSON.stringify(lineItems), // Optional metadata
+        restaurantInfo: JSON.stringify(restaurant),
+        menuItemDetail: JSON.stringify(checkoutSessionRequest.cartItems),
+        deliveryDetails: JSON.stringify(checkoutSessionRequest.deliveryDetail),
+        totalAmount: totalAmount * 100,
       },
     };
 
@@ -125,12 +129,39 @@ export const validateSignature = async (req: Request, res: Response) => {
     );
     sha.update(`${razorpay_order_id}|${razorpay_payment_id}`);
     const digest = sha.digest("hex");
+
     // Validate the signature
     if (digest !== razorpay_signature) {
       return res.status(403).json({
         message: "Transaction is not valid.",
       });
     }
+
+    // Fetch the order details from Razorpay
+    const razorpayOrder = await instance.orders.fetch(razorpay_order_id);
+
+    if (!razorpayOrder) {
+      return res.status(404).json({ message: "Order not found in Razorpay." });
+    }
+
+    // Parse metadata from Razorpay order's notes field
+    const {
+      restaurantInfo,
+      menuItemDetail,
+      deliveryDetails,
+      totalAmount,
+    }: any = razorpayOrder.notes;
+
+    const newOrder = new Order({
+      restaurant: JSON.parse(restaurantInfo),
+      user: req.userId,
+      status: "paid",
+      deliveryDetails: JSON.parse(deliveryDetails),
+      menuItems: JSON.parse(menuItemDetail),
+      totalAmount: totalAmount,
+    });
+    await newOrder.save();
+
     res.status(200).json({
       message: "Success",
       orderId: razorpay_order_id,

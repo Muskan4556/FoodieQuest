@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect, ReactNode } from "react";
-import { Restaurant } from "@/types"; 
+import { Restaurant } from "@/types";
 
 export type Cart = {
   _id: string;
@@ -16,6 +16,7 @@ export type InitialState = {
 type Action =
   | { type: "ADD_TO_CART"; payload: { restaurant: Restaurant; cartItem: Cart } }
   | { type: "REMOVE_FROM_CART"; payload: { cartItem: Cart } }
+  | { type: "RESET_CART" }
   | { type: "INIT_CART"; payload: InitialState };
 
 export type CartContextType = {
@@ -95,6 +96,13 @@ const cartReducer = (state: InitialState, action: Action): InitialState => {
       return state;
     }
 
+    case "RESET_CART": {
+      return {
+        restaurant: null,
+        cartItems: [],
+      };
+    }
+
     case "INIT_CART": {
       return action.payload; // Rehydrate cart from sessionStorage
     }
@@ -141,6 +149,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       sessionStorage.setItem("cart", JSON.stringify(state));
     }
   }, [state]);
+
+  // Clear sessionStorage if cart is reset
+  useEffect(() => {
+    if (state.cartItems.length === 0 && state.restaurant === null) {
+      sessionStorage.removeItem("cart"); // Remove from session storage after reset
+    }
+  }, [state]); // This will run when the cart state is reset
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>

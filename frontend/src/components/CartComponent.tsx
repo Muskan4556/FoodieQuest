@@ -63,7 +63,6 @@ const CartComponent = () => {
   const handleCheckOut = async (userFormData: UserFormData) => {
     if (!restaurant) return;
 
-    console.log("userFormData: ", userFormData);
     const checkoutData = {
       cartItems: cartItems.map((cartItem) => ({
         menuItemId: cartItem._id,
@@ -79,7 +78,6 @@ const CartComponent = () => {
       restaurantId: restaurant?._id,
     };
     const data = await createCheckoutSession(checkoutData);
-    console.log(data);
 
     // Initiate Razorpay checkout here
     const options = {
@@ -109,6 +107,9 @@ const CartComponent = () => {
 
         // Check if payment was successfully validated and redirect
         if (jsonRes.message === "Success") {
+          dispatch({
+            type: "RESET_CART",
+          });
           // Redirect user to a success page (can be any path)
           window.location.href = "/search/Patna"; // Using window.location for redirection
         } else {
