@@ -37,7 +37,7 @@ const CheckoutButton = ({ onCheckOut, disabled, isLoading }: Props) => {
     return (
       <Button
         onClick={onLogin}
-        className="bg-orange-500 hover:bg-orange-400 flex-1 w-[100%]"
+        className="bg-orange-600 hover:bg-orange-500 flex-1 w-[100%]"
       >
         Log in to checkout
       </Button>
@@ -46,11 +46,12 @@ const CheckoutButton = ({ onCheckOut, disabled, isLoading }: Props) => {
   if (isAuthLoading || !currentUser || isLoading) {
     return (
       <>
-        {isAuthLoading ? (
-          <LoadingButton value="Log in" />
-        ) : (
-          <LoadingButton value="Submit" />
-        )}
+        {
+          isAuthLoading && <LoadingButton value="Log in" />
+          // : (
+          //   <LoadingButton value="Submit" />
+          // )
+        }
       </>
     );
   }
@@ -60,7 +61,7 @@ const CheckoutButton = ({ onCheckOut, disabled, isLoading }: Props) => {
       <DialogTrigger asChild>
         <Button
           disabled={disabled}
-          className="bg-orange-500 hover:bg-orange-400 flex-1 w-[100%]"
+          className="bg-orange-600 hover:bg-orange-500 flex-1 w-[100%]"
         >
           Go to checkout
         </Button>

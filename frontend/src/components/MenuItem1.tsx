@@ -116,11 +116,13 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
           </CardContent>
         </div>
 
-        <div className="relative md:w-60 md:h-36 h-28 mx-4 w-[30%] ">
-          <LazyLoadImage
-            src={item.imageUrl}
-            className="w-full h-full object-cover rounded-lg"
-          />
+        <div className="relative md:w-60 md:h-36 h-28 mx-4 w-[30%]">
+          {item.imageUrl && (
+            <LazyLoadImage
+              src={item.imageUrl}
+              className="w-full h-full object-cover rounded-lg"
+            />
+          )}
 
           {!cartItemSelected ? (
             <>
@@ -130,7 +132,7 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
                 className="absolute -bottom-4 flex left-1/2 transform -translate-x-1/2 text-[#1ba672] font-bold bg-white md:text-lg text-sm md:py-6 md:w-[50%] hover:bg-[#d9dadb] rounded-lg hover:text-[#1ba672]"
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
                   transition={{ duration: 0.2 }}
@@ -144,7 +146,9 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
               >
                 <AlertDialogContent className=" w-[60%] md:w-[100%] rounded-lg">
                   <AlertDialogHeader>
-                    <AlertDialogTitle className="tracking-tighter md:tracking-tight ">Items already in cart</AlertDialogTitle>
+                    <AlertDialogTitle className="tracking-tighter md:tracking-tight ">
+                      Items already in cart
+                    </AlertDialogTitle>
                     <AlertDialogDescription className="tracking-tighter md:tracking-tight md:text-base">
                       Your cart contains items from other restaurant. Would you
                       like to reset your cart for adding items from this
@@ -158,7 +162,7 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      className="bg-orange-500 hover:bg-orange-400"
+                      className="bg-orange-600 hover:bg-orange-500"
                       onClick={handleConfirmAddToCart}
                     >
                       Continue
@@ -170,7 +174,7 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
           ) : (
             <Button
               variant="outline"
-              className="absolute -bottom-4 flex left-1/2 transform -translate-x-1/2 text-[#1ba672] font-bold bg-white md:text-lg text-sm  md:py-6 md:w-[50%] w-[80%]  rounded-lg hover:text-none hover:bg-none cursor-default"
+              className="absolute -bottom-4 flex left-1/2 transform -translate-x-1/2 text-[#1ba672] font-bold bg-white md:text-lg text-sm  md:py-6 md:w-[50%] w-[100%]  rounded-lg hover:text-none hover:bg-none cursor-default"
             >
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -183,7 +187,14 @@ const MenuItem1 = ({ item, restaurant, index }: Props) => {
                   className="mx-2 cursor-pointer"
                 />
               </motion.div>
-              {existingCartItem ? existingCartItem.quantity : 0}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.2 }}
+              >
+                {existingCartItem ? existingCartItem.quantity : 0}
+              </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

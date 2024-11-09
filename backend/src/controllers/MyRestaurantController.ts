@@ -2,13 +2,7 @@ import { Request, Response } from "express";
 import Restaurant, { MenuItemType } from "../models/restaurant";
 import cloudinary from "cloudinary";
 import mongoose, { Document } from "mongoose";
-
-// interface MenuItem extends Document {
-//   name: string;
-//   price: number;
-//   description?: string;
-//   imageUrl: string;
-// }
+import Order from "../models/order";
 
 interface MulterFiles {
   [key: string]: Express.Multer.File[]; // Allows for dynamic keys
@@ -68,7 +62,8 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
       })
     );
 
-    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItemType>;
+    restaurant.menuItems =
+      menuItems as mongoose.Types.DocumentArray<MenuItemType>;
     await restaurant.save();
 
     res.status(201).send(restaurant);
@@ -156,12 +151,63 @@ export const updateMyRestaurant = async (req: Request, res: Response) => {
       })
     );
 
-    restaurant.menuItems = menuItems as mongoose.Types.DocumentArray<MenuItemType>;
+    restaurant.menuItems =
+      menuItems as mongoose.Types.DocumentArray<MenuItemType>;
     await restaurant.save();
 
     res.status(200).send(restaurant);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const getMyRestaurantOrder = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "No restaurant found",
+      });
+    }
+    const orders = await Order.find({ restaurant: restaurant?._id })
+      .populate("restaurant")
+      .populate("user")
+      .sort({ createdAt: -1 });
+    if (!orders) {
+      return res.status(404).json({ message: "No order found" });
+    }
+    return res.status(200).json(orders);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Something went wrong" });
+  }
+};
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const restaurant = await Restaurant.findById(order.restaurant);
+
+    if (restaurant?.user?._id.toString() !== req.userId) {
+      return res.status(401).send();
+    }
+
+    order.status = status;
+    await order.save();
+
+    return res.status(200).json(order);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Unable to update order status",
+    });
   }
 };

@@ -114,7 +114,7 @@ const MenuItemInput = ({ index, removeMenuItem }: Props) => {
         variant="outline"
         type="button"
         onClick={removeMenuItem}
-        className="text-white bg-red-600 hover:bg-red-500 hover:text-white max-h-fit md:hidden"
+        className="text-white bg-red-600 hover:bg-red-500 w-full md:w-auto hover:text-white max-h-fit md:hidden"
       >
         Remove
       </Button>

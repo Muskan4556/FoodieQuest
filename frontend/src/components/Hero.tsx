@@ -1,4 +1,4 @@
-import hero from "@/assets/hero.png";
+import hero1 from "@/assets/hero1.jpeg";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -6,7 +6,7 @@ const Hero = () => {
   return (
     <div className="relative">
       <LazyLoadImage
-        src={hero}
+        src={hero1}
         effect="opacity"
         className="w-screen max-h-[500px]  object-cover relative "
         style={{ zIndex: -1 }}

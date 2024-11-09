@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { jwtCheck, jwtParse } from "../middleware/auth";
 import {
   createCheckoutSession,
+  getMyOrder,
   validateSignature,
 } from "../controllers/OrderController";
 
@@ -15,5 +16,7 @@ router.post(
 );
 
 router.post("/checkout-order/validate", jwtCheck, jwtParse, validateSignature);
+
+router.get("/", jwtCheck, jwtParse, getMyOrder)
 
 export default router;

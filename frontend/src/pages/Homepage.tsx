@@ -23,7 +23,7 @@ const Homepage = () => {
         <div className="md:mx-12 mx-6">
           <SearchBar
             searchQuery=""
-            placeholder="Search by city"
+            placeholder="Search by city (e.g., Patna)"
             onSubmit={handleSearchSubmit}
           />
         </div>

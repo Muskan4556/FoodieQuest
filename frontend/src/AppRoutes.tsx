@@ -1,13 +1,26 @@
+import React, { Suspense } from "react";
+import Loader from "./components/Loader";
 import { Navigate, Route, Routes } from "react-router-dom";
+
 import Layout from "./layouts/Layout";
 import Homepage from "./pages/Homepage";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
-import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import ManageRestaurantPage from "./pages/ManageRestaurantPage";
+
+const UserProfilePage = React.lazy(() => import("@/pages/UserProfilePage"));
+const ManageRestaurantPage = React.lazy(
+  () => import("@/pages/ManageRestaurantPage")
+);
+// const SearchPage = React.lazy(() => import("@/pages/SearchPage"));
+const RestaurantInfo = React.lazy(() => import("@/pages/RestaurantDetails"));
+const Cart = React.lazy(() => import("@/components/CartComponent"));
+const OrderStatusPage = React.lazy(() => import("@/pages/OrderStatusPage"));
+// import UserProfilePage from "./pages/UserProfilePage";
+// import ManageRestaurantPage from "./pages/ManageRestaurantPage";
 import SearchPage from "./pages/SearchPage";
-import RestaurantInfo from "./pages/RestaurantDetails";
-import Cart from "./components/CartComponent";
+// import RestaurantInfo from "./pages/RestaurantDetails";
+// import Cart from "./components/CartComponent";
+// import OrderStatusPage from "./pages/OrderStatusPage";
 
 const AppRoutes = () => {
   return (
@@ -36,7 +49,31 @@ const AppRoutes = () => {
             path="/manage-restaurant"
             element={
               <Layout>
-                <ManageRestaurantPage />
+                <Suspense
+                  fallback={
+                    <div>
+                      <Loader />
+                    </div>
+                  }
+                >
+                  <ManageRestaurantPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/order"
+            element={
+              <Layout>
+                <Suspense
+                  fallback={
+                    <div>
+                      <Loader />
+                    </div>
+                  }
+                >
+                  <OrderStatusPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -46,7 +83,15 @@ const AppRoutes = () => {
           path="/search/:city"
           element={
             <Layout>
-              <SearchPage />
+              {/* <Suspense
+                fallback={
+                  <div>
+                    <Loader />
+                  </div>
+                }
+              > */}
+                <SearchPage />
+              {/* </Suspense> */}
             </Layout>
           }
         />
@@ -54,7 +99,15 @@ const AppRoutes = () => {
           path="/details/:restaurantId"
           element={
             <Layout>
-              <RestaurantInfo />
+              <Suspense
+                fallback={
+                  <div>
+                    <Loader />
+                  </div>
+                }
+              >
+                <RestaurantInfo />
+              </Suspense>
             </Layout>
           }
         />
@@ -62,7 +115,15 @@ const AppRoutes = () => {
           path="/cart"
           element={
             <Layout>
-              <Cart />{" "}
+              <Suspense
+                fallback={
+                  <div>
+                    <Loader />
+                  </div>
+                }
+              >
+                <Cart />
+              </Suspense>
             </Layout>
           }
         />

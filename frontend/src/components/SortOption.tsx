@@ -31,7 +31,7 @@ const SortOption = ({ selectedSortOption, onChange }: Props) => {
             variant="outline"
             className={`flex gap-1  ${
               selectedSortOption && selectedSortOption !== "bestMatch"
-                ? "border-2 border-orange-500"
+                ? "border-2 border-orange-600"
                 : ""
             }`}
           >

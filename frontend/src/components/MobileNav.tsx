@@ -1,4 +1,4 @@
-import { CircleUserRound, Menu, ShoppingCart } from "lucide-react";
+import { ChevronRight, Menu, ShoppingCart } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -25,35 +25,33 @@ const MobileNav = () => {
     <>
       <Sheet>
         <SheetTrigger className="flex justify-center items-center">
-          <div className="flex ">
-            <Link to="/cart">
-              <ShoppingCart strokeWidth={2.5} className="text-orange-500" />
-            </Link>
+          <div className="flex mx-4">
+            <div className="flex">
+              <Link to="/cart">
+                <ShoppingCart strokeWidth={2.5} className="text-orange-600" />
+              </Link>
+            </div>
             {cartItems.length > 0 && (
-              <div className="-mt-4 w-6 h-6 rounded-full p-1 font-semibold bg-orange-500 text-white text-sm flex justify-center items-center">
+              <div className="-mt-4 w-6 h-6 rounded-full p-1 font-semibold bg-orange-600 text-white text-sm flex justify-center items-center">
                 {cartItems.length}
               </div>
             )}
           </div>
-          {!isAuthenticated ? (
-            <Menu className="text-orange-500" />
-          ) : (
-            <CircleUserRound className="text-orange-500 w-7 h-7 " />
-          )}
+          <Menu strokeWidth={2.5} className="text-orange-600" />
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
             <SheetTitle>
-              <span className="font-bold tracking-tight">
+              <span className="font-bold tracking-tight text-orange-600">
                 Welcome to Foodie Quest
               </span>
             </SheetTitle>
             <Separator />
             <SheetDescription className="flex">
               {isAuthenticated ? (
-                <div className="flex flex-col items-start mt-4 w-full">
+                <div className="flex flex-col items-start mt-4 w-full relative">
                   <Link to="/user-profile">
-                    <div className="flex">
+                    <div className="flex items-center">
                       <Avatar>
                         <AvatarImage src={user?.picture} />
                         <AvatarFallback>CN</AvatarFallback>
@@ -69,20 +67,43 @@ const MobileNav = () => {
                           {user?.email}
                         </div>
                       </div>
+                      <ChevronRight
+                        strokeWidth={2}
+                        size="18px"
+                        className=" absolute right-2 text-black -mt-4 "
+                      />
                     </div>
                   </Link>
                   <Link
-                    to="manage-restaurant"
+                    to="/manage-restaurant"
                     className=" flex justify-start mt-6 w-full"
                   >
                     <Button
                       variant="outline"
-                      className="flex-1 font-bold hover:text-orange-500 "
+                      className="flex-1 text-black font-bold hover:text-orange-500 relative"
                     >
                       Manage Restaurant
+                      <ChevronRight
+                        strokeWidth={2}
+                        size="18px"
+                        className="absolute right-2"
+                      />
                     </Button>
                   </Link>
-                  <div className="flex justify-center  mt-6 w-full">
+                  <Link to="/order" className=" flex justify-start mt-4 w-full">
+                    <Button
+                      variant="outline"
+                      className="flex-1 text-black font-bold hover:text-orange-500 relative"
+                    >
+                      Order Status
+                      <ChevronRight
+                        strokeWidth={2}
+                        size="18px"
+                        className="absolute right-2"
+                      />
+                    </Button>
+                  </Link>
+                  <div className="flex justify-center mt-4 w-full">
                     <Button
                       onClick={() => {
                         logout({
@@ -92,7 +113,7 @@ const MobileNav = () => {
                         });
                         toast.success("Logged out successfully!");
                       }}
-                      className="flex-1 font-bold bg-orange-500 hover:bg-orange-600"
+                      className="flex-1 font-bold bg-orange-600 hover:bg-orange-500"
                     >
                       Log Out
                     </Button>
@@ -101,7 +122,7 @@ const MobileNav = () => {
               ) : (
                 <Button
                   onClick={async () => await loginWithRedirect()}
-                  className="flex-1 font-bold bg-orange-500 hover:bg-orange-600"
+                  className="flex-1 font-bold bg-orange-600 hover:bg-orange-500"
                 >
                   Log In
                 </Button>

@@ -6,7 +6,9 @@ import { validateMyRestaurantRequest } from "../middleware/validation";
 import {
   createMyRestaurant,
   getMyRestaurant,
+  getMyRestaurantOrder,
   updateMyRestaurant,
+  updateOrderStatus,
 } from "../controllers/MyRestaurantController";
 
 const router = express.Router();
@@ -74,6 +76,9 @@ router.put(
   jwtParse,
   updateMyRestaurant
 );
+
+router.get("/order", jwtCheck, jwtParse, getMyRestaurantOrder )
+router.patch("/order/:orderId/status", jwtCheck,jwtParse, updateOrderStatus )
 
 export default router;
 

@@ -33,12 +33,6 @@ type CheckoutSessionRequest = {
   restaurantId: string;
 };
 
-type OnSuccessRequest = {
-  razorpay_payment_id: string;
-  razorpay_order_id: string;
-  razorpay_signature: string;
-};
-
 export const createCheckoutSession = async (req: Request, res: Response) => {
   try {
     const checkoutSessionRequest: CheckoutSessionRequest = req.body;
@@ -171,6 +165,27 @@ export const validateSignature = async (req: Request, res: Response) => {
     console.error(error);
     res.status(500).json({
       message: "Internal server error.",
+    });
+  }
+};
+
+export const getMyOrder = async (req: Request, res: Response) => {
+  try {
+    const order = await Order.find({ user: req.userId })
+      .populate("restaurant")
+      .populate("user")
+      .sort({ 
+        createdAt: -1 });
+    if (!order) {
+      return res.status(404).json({
+        message: "No order found.",
+      });
+    }
+    return res.status(200).json(order);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: "Something went wrong.",
     });
   }
 };

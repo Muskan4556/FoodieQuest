@@ -55,7 +55,7 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
         <Search
           strokeWidth={2.5}
           //   size={30}
-          className="md:ml-1 text-orange-500 h-4  md:h-[1.85rem] md:w-[1.85rem] "
+          className="md:ml-1 text-orange-600 h-4  md:h-[1.85rem] md:w-[1.85rem] "
         />
         <FormField
           control={form.control}
@@ -77,7 +77,7 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
           onClick={handleReset}
           type="button"
           variant="ghost"
-          className="rounded-lg text-orange-500 hover:bg-white hover:underline hover:text-orange-500 md:text-base hidden md:block text-xs "
+          className="rounded-lg text-orange-600 hover:bg-white hover:underline hover:text-orange-500 md:text-base hidden md:block text-xs "
         >
           Clear
         </Button>

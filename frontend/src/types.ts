@@ -43,3 +43,33 @@ export type RestaurantSearchResponse = {
     pages: number;
   };
 };
+
+export type OrderStatus =
+  | "placed"
+  | "paid"
+  | "inProgress"
+  | "outForDelivery"
+  | "delieved";
+
+export type Order = {
+  _id: string;
+  user: User;
+  restaurant: Restaurant;
+  deliveryDetails: {
+    email: string;
+    name: string;
+    address: string;
+    city: string;
+  };
+  menuItems: [
+    {
+      menuItemId: string;
+      name: string;
+      quantity: number;
+    }
+  ];
+  totalAmount: number;
+  status: OrderStatus;
+  createdAt: Date;
+  updatedAt: Date;
+};

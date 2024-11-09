@@ -36,12 +36,12 @@ const Cuisines = ({ onChange, selectedCuisines }: Props) => {
             <Button
               variant="outline"
               className={`${
-                selectedCuisines.length > 0 ? "border-2 border-orange-500" : ""
+                selectedCuisines.length > 0 ? "border-2 border-orange-600" : ""
               }`}
             >
               <div className="flex gap-1 items-center justify-center">
                 {selectedCuisines.length > 0 && (
-                  <span className="w-5 h-5 bg-orange-500 mr-1 text-white rounded-full flex items-center justify-center text-xs">
+                  <span className="w-5 h-5 bg-orange-600 mr-1 text-white rounded-full flex items-center justify-center text-xs">
                     {selectedCuisines.length}
                   </span>
                 )}

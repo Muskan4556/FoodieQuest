@@ -57,7 +57,7 @@ const RestaurantCard = ({ restaurant }: Props) => {
                 {restaurant.cuisines.slice(0, 4).map((cuisine, index) => (
                   <span
                     key={index}
-                    className="inline-block bg-orange-500 text-white rounded-full px-2 py-1 text-xs mr-1 mb-1"
+                    className="inline-block bg-orange-600 text-white rounded-full px-2 py-1 text-xs mr-1 mb-1"
                   >
                     {cuisine}
                   </span>
@@ -70,7 +70,7 @@ const RestaurantCard = ({ restaurant }: Props) => {
               restaurant.cuisines.map((cuisine, index) => (
                 <span
                   key={index}
-                  className="inline-block bg-orange-500 text-white rounded-full px-2 py-1 text-xs mr-1 mb-1"
+                  className="inline-block bg-orange-600 text-white rounded-full px-2 py-1 text-xs mr-1 mb-1"
                 >
                   {cuisine}
                 </span>

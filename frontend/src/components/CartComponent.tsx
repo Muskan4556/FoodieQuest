@@ -111,7 +111,7 @@ const CartComponent = () => {
             type: "RESET_CART",
           });
           // Redirect user to a success page (can be any path)
-          window.location.href = "/search/Patna"; // Using window.location for redirection
+          window.location.href = "/order"; // Using window.location for redirection
         } else {
           window.location.href = `/details/${restaurant._id}`;
         }

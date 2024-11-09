@@ -16,16 +16,24 @@ const MainNav = () => {
       <span className="flex space-x-2 items-center">
         <div className="flex ">
           <Link to="/cart">
-            <ShoppingCart strokeWidth={2.5} className="text-orange-500" />
+            <ShoppingCart strokeWidth={2.5} className="text-orange-600 mr-2" />
           </Link>
           {cartItems.length > 0 && (
-            <div className="-mt-4 w-6 h-6 rounded-full p-1 font-semibold bg-orange-500 text-white text-sm flex justify-center items-center">
+            <div className="-mt-4 w-6 h-6 rounded-full p-1 font-semibold bg-orange-600 text-white text-sm flex justify-center items-center">
               {cartItems.length}
             </div>
           )}
         </div>
         {isAuthenticated ? (
-          <UsernameMenu />
+          <>
+            <Link
+              to="/order"
+              className="font-bold text-lg text-orange-600 hover:underline"
+            >
+              Order Status
+            </Link>
+            <UsernameMenu />
+          </>
         ) : (
           <Button
             variant="ghost"
