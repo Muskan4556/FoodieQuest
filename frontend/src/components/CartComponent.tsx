@@ -10,6 +10,8 @@ import CheckoutButton from "./CheckoutButton";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { useCreateCheckoutSession } from "@/api/OrderApi";
 import { useAuth0 } from "@auth0/auth0-react";
+import { AnimatePresence, motion } from "framer-motion";
+
 const CartComponent = () => {
   const { state, dispatch } = useCart();
   const { cartItems, restaurant } = state;
@@ -149,93 +151,143 @@ const CartComponent = () => {
   }
 
   return (
-    <div className="container mx-auto md:p-10 p-4 md:w-1/2 lg:w-3/5 bg-white shadow-xl border rounded-lg">
-      <div className="flex flex-col md:flex-row items-center pb-4 mb-4">
-        <LazyLoadImage
-          src={restaurant.imageUrl}
-          alt={restaurant.name}
-          className="w-24 h-24 rounded-lg mr-4 object-cover shadow-md hidden md:block"
-        />
-        <div className="">
-          <Link to={`/details/${restaurant._id}`}>
-            <h2 className="md:text-3xl text-xl font-bold text-gray-800 tracking-tight hover:underline">
-              {restaurant.name}
-            </h2>
-          </Link>
-          <p className="text-gray-600 md:text-base text-sm">
-            {restaurant.areaName}
-          </p>
-        </div>
-      </div>
-      <Separator />
-      <div className="my-4 ">
-        {cartItems.map((item) => (
-          <div
-            key={item._id}
-            className="flex justify-between items-center py-2 mb-2 text-sm md:text-base tracking-tight md:whitespace-nowrap"
-          >
-            <div className="flex  items-center">
-              <span className="md:ml-4 font-medium text-gray-700 tracking-tight">
-                {item.name}
-              </span>
-              <Button
-                variant="default"
-                className="flex items-center text-[#1ba672] font-bold bg-white md:text-lg text-sm md:mx-4 mx-2 rounded-md hover:bg-transparent hover:text-none transition-colors duration-200 cursor-default p-0"
+    <AnimatePresence>
+      <motion.div
+        key="cart-container"
+        className="container mx-auto md:p-10 p-4 md:w-1/2 lg:w-3/5 bg-white shadow-xl border rounded-lg"
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{
+          opacity: { duration: 0.6 },
+          y: { type: "spring", stiffness: 80, damping: 20 },
+        }}
+      >
+        <div className="flex flex-col md:flex-row items-center pb-4 mb-4">
+          <LazyLoadImage
+            src={restaurant.imageUrl}
+            alt={restaurant.name}
+            className="w-24 h-24 rounded-lg mr-4 object-cover shadow-md hidden md:block"
+          />
+          <div>
+            <Link to={`/details/${restaurant._id}`}>
+              <motion.h2
+                className="md:text-3xl text-xl font-bold text-gray-800 tracking-tight hover:underline"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
               >
-                <Minus
-                  onClick={() => removeToCart(item)}
-                  className="mx-2 cursor-pointer h-4 w-4 "
-                />
-                <div className="md:text-base">{item.quantity}</div>
-                <Plus
-                  onClick={() => addToCart(item, restaurant)}
-                  className="mx-2 cursor-pointer h-4 w-4"
-                />
-              </Button>
-            </div>
-            <span className="font-bold text-gray-800 text-sm md:text-base">
-              ₹{item.price * item.quantity}
+                {restaurant.name}
+              </motion.h2>
+            </Link>
+            <motion.p
+              className="text-gray-600 md:text-base text-sm"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {restaurant.areaName}
+            </motion.p>
+          </div>
+        </div>
+        <Separator />
+
+        <motion.div
+          className="my-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1, // Delay for staggered animation
+              },
+            },
+          }}
+        >
+          {cartItems.map((item) => (
+            <motion.div
+              key={item._id}
+              className="flex justify-between items-center py-2 mb-2 text-sm md:text-base tracking-tight md:whitespace-nowrap"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0, x: 30 }}
+              transition={{ type: "spring", stiffness: 70, damping: 20 }}
+            >
+              <div className="flex items-center">
+                <span className="md:ml-4 font-medium text-gray-700 tracking-tight">
+                  {item.name}
+                </span>
+                <Button
+                  variant="default"
+                  className="flex items-center text-[#1ba672] font-bold bg-white md:text-lg text-sm md:mx-4 mx-2 rounded-md hover:bg-transparent hover:text-none transition-colors duration-200 cursor-default p-0"
+                >
+                  <Minus
+                    onClick={() => removeToCart(item)}
+                    className="mx-2 cursor-pointer h-4 w-4"
+                  />
+                  <div className="md:text-base">{item.quantity}</div>
+                  <Plus
+                    onClick={() => addToCart(item, restaurant)}
+                    className="mx-2 cursor-pointer h-4 w-4"
+                  />
+                </Button>
+              </div>
+              <span className="font-bold text-gray-800 text-sm md:text-base">
+                ₹{item.price * item.quantity}
+              </span>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <Separator />
+        <motion.div
+          className="flex flex-col pt-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          <h3 className="md:text-lg text-sm font-bold mb-2 text-gray-800">
+            Bill Details
+          </h3>
+          <div className="flex justify-between py-1 md:text-base text-sm">
+            <span className="text-gray-600">Item Total</span>
+            <span className="text-gray-800">
+              ₹
+              {cartItems.reduce(
+                (total, item) => total + item.price * item.quantity,
+                0
+              )}
             </span>
           </div>
-        ))}
-      </div>
+          <div className="flex justify-between py-1 ">
+            <span className="text-gray-600">Delivery Fee</span>
+            <span className="text-gray-800">₹{restaurant?.deliveryPrice}</span>
+          </div>
+          <Separator className="my-2" />
+          <div className="flex justify-between font-bold py-1">
+            <span className="text-gray-800 md:text-base text-sm">To Pay</span>
+            <span className="md:text-lg text-[#1ba672] text-sm">
+              ₹{calculateTotal()}
+            </span>
+          </div>
+        </motion.div>
 
-      <Separator />
-      <div className="flex flex-col  pt-4">
-        <h3 className="md:text-lg text-sm font-bold mb-2 text-gray-800">
-          Bill Details
-        </h3>
-        <div className="flex justify-between py-1 md:text-base text-sm">
-          <span className="text-gray-600">Item Total</span>
-          <span className="text-gray-800">
-            ₹
-            {cartItems.reduce(
-              (total, item) => total + item.price * item.quantity,
-              0
-            )}
-          </span>
-        </div>
-        <div className="flex justify-between py-1 ">
-          <span className="text-gray-600">Delivery Fee</span>
-          <span className="text-gray-800">₹{restaurant?.deliveryPrice}</span>
-        </div>
-        <Separator className="my-2" />
-        <div className="flex justify-between font-bold py-1">
-          <span className="text-gray-800 md:text-base text-sm">To Pay</span>
-          <span className="md:text-lg text-[#1ba672] text-sm">
-            ₹{calculateTotal()}
-          </span>
-        </div>
-      </div>
-
-      <div className="py-4">
-        <CheckoutButton
-          disabled={cartItems.length === 0}
-          onCheckOut={handleCheckOut}
-          isLoading={isCheckoutLoading}
-        />
-      </div>
-    </div>
+        <motion.div
+          className="py-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <CheckoutButton
+            disabled={cartItems.length === 0}
+            onCheckOut={handleCheckOut}
+            isLoading={isCheckoutLoading}
+          />
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   );
 };
 

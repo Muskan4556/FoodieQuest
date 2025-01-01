@@ -59,7 +59,7 @@ const ManageRestaurantPage = () => {
         </TabsContent>
       ) : (
         <TabsContent value="orders" className="space-y-6 p-4">
-          No order found ☹️
+          <Loader />;
         </TabsContent>
       )}
       <TabsContent value="manage-restaurant">

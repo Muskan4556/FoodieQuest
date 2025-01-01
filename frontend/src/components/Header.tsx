@@ -1,10 +1,13 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import MobileNav from "./MobileNav";
 import MainNav from "./MainNav";
 
 const Header = () => {
+  const {pathname} = useLocation();
+  console.log(location);
+  
   return (
-    <div className="border-b-2 border-orange-500 py-6 ">
+    <div className={`${pathname !== "/" && "border-b-2 border-orange-500"} py-6`}>
       <div className="container mx-auto md:px-10 px-6 flex justify-between items-center">
         <Link
           to="/"

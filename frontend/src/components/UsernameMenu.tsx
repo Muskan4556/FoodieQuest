@@ -23,7 +23,7 @@ const UsernameMenu = () => {
         setIsOpen(!isOpen);
       }}
     >
-      <DropdownMenuTrigger className="flex items-center px-3 font-bold text-lg text-orange-600 hover:underline gap-2">
+      <DropdownMenuTrigger className="flex items-center px-3 font-semibold text-lg hover:text-orange-500 hover:underline gap-2 lg:hidden ">
         <Avatar>
           <AvatarImage src={user?.picture} />
           <AvatarFallback>CN</AvatarFallback>

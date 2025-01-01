@@ -30,6 +30,9 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
     defaultValues: { searchQuery: searchQuery },
   });
 
+  // Watch for the value of 'searchQuery' input
+  const searchQueryValue = form.watch("searchQuery");
+
   useEffect(() => {
     form.reset({ searchQuery });
   }, [form, searchQuery]);
@@ -54,7 +57,6 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
       >
         <Search
           strokeWidth={2.5}
-          //   size={30}
           className="md:ml-1 text-orange-600 h-4  md:h-[1.85rem] md:w-[1.85rem] "
         />
         <FormField
@@ -65,7 +67,7 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
               <FormControl>
                 <Input
                   {...field}
-                  className="border-none shadow-none md:text-xl text-md focus-visible:ring-0 focus placeholder:text-md md:placeholder:text-xl placeholder:font-medium placeholder:tracking-tight "
+                  className="border-none shadow-none md:text-xl text-md focus-visible:ring-0 focus placeholder:text-md md:placeholder:text-xl placeholder:text-[16px]  placeholder:font-medium placeholder:tracking-tight "
                   placeholder={placeholder}
                 />
               </FormControl>
@@ -73,14 +75,23 @@ const SearchBar = ({ onSubmit, onReset, placeholder, searchQuery }: Props) => {
           )}
         />
 
+        {searchQueryValue && (
+          <Button
+            onClick={handleReset}
+            type="button"
+            variant="ghost"
+            className="rounded-lg text-orange-600 hover:underline hover:text-orange-500 md:text-base hidden md:block text-xs "
+          >
+            Clear
+          </Button>
+        )}
         <Button
-          onClick={handleReset}
-          type="button"
-          variant="ghost"
-          className="rounded-lg text-orange-600 hover:bg-white hover:underline hover:text-orange-500 md:text-base hidden md:block text-xs "
-        >
-          Clear
-        </Button>
+            type="submit"
+            variant="default"
+            className="pt-[0.35rem] rounded-lg bg-orange-600  hover:bg-orange-500 md:text-base  md:block text-xs "
+          >
+            Search
+          </Button>
       </form>
     </Form>
   );

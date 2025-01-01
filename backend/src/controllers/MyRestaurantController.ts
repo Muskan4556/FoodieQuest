@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import Restaurant, { MenuItemType } from "../models/restaurant";
 import cloudinary from "cloudinary";
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import Order from "../models/order";
 
 interface MulterFiles {

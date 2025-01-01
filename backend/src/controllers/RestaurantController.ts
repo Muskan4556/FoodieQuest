@@ -108,3 +108,77 @@ export const searchRestaurant = async (req: Request, res: Response) => {
  *
  * $or - { $or: [ { condition1 }, { condition2 }, ... ] }
  */
+
+/*
+Let’s break down how the `sortingOptions` object and the `sortValue` calculation work in relation to `.sort({ [sortOption]: sortValue as SortOrder })`.
+
+### 1. **`sortingOptions` Object**:
+The `sortingOptions` object defines how to sort the restaurants based on different fields (like `deliveryTime`, `updatedAt`, etc.). Each field is mapped to a numeric value representing the sorting direction:
+
+```typescript
+const sortingOptions: { [key: string]: SortOrder } = {
+  deliveryTime: 1,    // Ascending order (smallest to largest)
+  updatedAt: -1,      // Descending order (most recent first)
+  avgRating: -1,      // Descending order (highest rating first)
+  costForTwo: 1,      // Ascending order (cheapest to most expensive)
+};
+```
+
+- **`deliveryTime: 1`** means sort by `deliveryTime` in ascending order (smallest to largest).
+- **`updatedAt: -1`** means sort by `updatedAt` in descending order (most recent first).
+- **`avgRating: -1`** means sort by `avgRating` in descending order (highest rating first).
+- **`costForTwo: 1`** means sort by `costForTwo` in ascending order (cheapest to most expensive).
+
+This object is essentially a dictionary that tells the system how to sort based on different fields.
+
+### 2. **Determining the `sortValue`**:
+Next, the value for `sortValue` is determined dynamically based on the selected `sortOption`.
+
+```typescript
+const sortValue =
+  sortingOptions[sortOption] !== undefined ? sortingOptions[sortOption] : 1;
+```
+
+- **`sortOption`** is a string that represents the field you want to sort by, such as `"deliveryTime"`, `"updatedAt"`, `"avgRating"`, or `"costForTwo"`.
+  
+- **`sortingOptions[sortOption]`** looks up the sorting direction (either `1` or `-1`) for that field. If `sortOption` is a valid key in the `sortingOptions` object, it returns the corresponding value (`1` or `-1`).
+  
+- **`!== undefined`** checks if the `sortOption` exists in `sortingOptions`. If it exists, it uses the corresponding value for sorting direction.
+  
+- If `sortOption` is not found in `sortingOptions` (i.e., it's an invalid or undefined value), the fallback value is `1`, meaning the default sorting direction will be ascending.
+
+For example:
+- If `sortOption = "avgRating"`, then `sortValue = sortingOptions["avgRating"]` will be `-1` (because `avgRating` maps to `-1` in `sortingOptions`).
+- If `sortOption = "costForTwo"`, then `sortValue = sortingOptions["costForTwo"]` will be `1` (because `costForTwo` maps to `1` in `sortingOptions`).
+
+### 3. **Using `sortValue` in the `.sort()` Method**:
+Now, that you have the correct `sortValue` based on the `sortOption`, you use it in the `.sort()` method like this:
+
+```typescript
+.sort({ [sortOption]: sortValue as SortOrder })
+```
+
+This line dynamically constructs the sorting object. Here's how:
+
+- **`[sortOption]`** is a computed property name, meaning the key for sorting is the value of the `sortOption` variable (e.g., `"deliveryTime"`, `"updatedAt"`, etc.).
+  
+- **`sortValue`** is the sorting direction (`1` for ascending, `-1` for descending).
+
+So, if `sortOption = "avgRating"` and `sortValue = -1`, the code will generate:
+```javascript
+.sort({ avgRating: -1 }) // Sort by "avgRating" in descending order
+```
+
+### Full Example:
+
+1. If the request has `sortOption = "deliveryTime"`, the `sortValue` will be `1` (ascending order).
+   - The `.sort()` will become `.sort({ deliveryTime: 1 })`, which sorts restaurants by delivery time in ascending order.
+
+2. If the request has `sortOption = "updatedAt"`, the `sortValue` will be `-1` (descending order).
+   - The `.sort()` will become `.sort({ updatedAt: -1 })`, which sorts restaurants by the most recent update first.
+
+### Summary:
+- The `sortingOptions` object maps each field to a sorting direction.
+- The `sortValue` is dynamically set based on the `sortOption` provided in the request. If the `sortOption` is not found, the default sorting direction is ascending (`1`).
+- The `sortValue` is then used to construct a dynamic `.sort()` query to order the results based on the specified field and direction.
+*/

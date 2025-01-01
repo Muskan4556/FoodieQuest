@@ -7,20 +7,14 @@ import Homepage from "./pages/Homepage";
 import AuthCallbackPage from "./pages/AuthCallbackPage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 
-const UserProfilePage = React.lazy(() => import("@/pages/UserProfilePage"));
 const ManageRestaurantPage = React.lazy(
   () => import("@/pages/ManageRestaurantPage")
 );
-// const SearchPage = React.lazy(() => import("@/pages/SearchPage"));
 const RestaurantInfo = React.lazy(() => import("@/pages/RestaurantDetails"));
 const Cart = React.lazy(() => import("@/components/CartComponent"));
 const OrderStatusPage = React.lazy(() => import("@/pages/OrderStatusPage"));
-// import UserProfilePage from "./pages/UserProfilePage";
-// import ManageRestaurantPage from "./pages/ManageRestaurantPage";
+import UserProfilePage from "./pages/UserProfilePage";
 import SearchPage from "./pages/SearchPage";
-// import RestaurantInfo from "./pages/RestaurantDetails";
-// import Cart from "./components/CartComponent";
-// import OrderStatusPage from "./pages/OrderStatusPage";
 
 const AppRoutes = () => {
   return (

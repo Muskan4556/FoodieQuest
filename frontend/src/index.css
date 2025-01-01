@@ -82,12 +82,36 @@
 }
 
 .form-container {
+  display: flex;
+  align-items: center;
+  position: relative;
   transition: all 0.3s ease;
+  border-radius: 8px; 
+  background-color: #fff; 
+  padding: 8px 12px; 
+  border: 1px solid #ccc; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .form-container:focus-within {
-  backdrop-filter: blur(30px); /* Subtle blur for the glass effect */
-  background-color: rgba(255, 255, 255, 0.25); /* Lighter background on focus */
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.8); /* Orange glow around the form */
-  border: 2px solid rgba(255, 165, 0, 0.8); /* Border color on focus */
+  background-color: #fafafa; 
+  border-color: #ff6f00; 
+  box-shadow: 0 0 8px rgba(255, 111, 0, 0.7); 
 }
+
+.form-container input {
+  width: 100%; /* Full width of the container */
+  padding: 8px 10px;
+  font-size: 18px; 
+  border: none; 
+  outline: none; 
+  background: transparent; 
+  color: #333; 
+}
+
+.form-container input::placeholder {
+  color: #aaa; /* Light placeholder text */
+  font-weight: 400; /* Subtle placeholder text */
+  transition: color 0.3s ease; /* Smooth transition for placeholder color */
+}
+
