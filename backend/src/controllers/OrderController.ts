@@ -138,7 +138,7 @@ export const validatePayment = async (req: Request, res: Response) => {
 
 export const validateWebhook = async (req: Request, res: Response) => {
   try {
-    const webhookSignature = req.headers["X-Razorpay-Signature"] as string;
+    const webhookSignature = req.get("X-Razorpay-Signature") as string;
 
     const isWebhookValid = validateWebhookSignature(
       JSON.stringify(req.body),
