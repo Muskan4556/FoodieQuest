@@ -16,12 +16,16 @@ const OrderStatusPage = () => {
 
   return (
     <div className="space-y-10">
-      {orderInfo.map((order) => (
-        <div className="space-y-10 bg-gray-50  p-4 md:p-10 rounded-lg">
-          <OrderStatusHeader order={order} />
-          <OrderStatusDetail order={order} />
-        </div>
-      ))}
+      {orderInfo.map((order) => {
+        if (order.status !== "placed") {
+          return (
+            <div className="space-y-10 bg-gray-50  p-4 md:p-10 rounded-lg">
+              <OrderStatusHeader order={order} />
+              <OrderStatusDetail order={order} />
+            </div>
+          );
+        }
+      })}
     </div>
   );
 };

@@ -53,6 +53,7 @@ export type OrderStatus =
 
 export type Order = {
   _id: string;
+  paymentStatus: string;
   user: User;
   restaurant: Restaurant;
   deliveryDetails: {

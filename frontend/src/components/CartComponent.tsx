@@ -9,20 +9,19 @@ import { Link } from "react-router-dom";
 import CheckoutButton from "./CheckoutButton";
 import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { useCreateCheckoutSession } from "@/api/OrderApi";
-import { useAuth0 } from "@auth0/auth0-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useAuth0 } from "@auth0/auth0-react";
+import { toast } from "sonner";
 
 const CartComponent = () => {
   const { state, dispatch } = useCart();
   const { cartItems, restaurant } = state;
-
   const { createCheckoutSession, isLoading: isCheckoutLoading } =
     useCreateCheckoutSession();
 
   const RAZORPAY_API_KEY = import.meta.env.VITE_RAZORPAY_API_KEY;
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { getAccessTokenSilently } = useAuth0();
-
   const addToCart = (item: Cart, restaurant: Restaurant) => {
     dispatch({
       type: "ADD_TO_CART",
@@ -84,10 +83,10 @@ const CartComponent = () => {
     // Initiate Razorpay checkout here
     const options = {
       key: RAZORPAY_API_KEY,
-      amount: data.order.amount, // The amount from backend (in paise)
+      amount: data.order.amount,
       currency: data.order.currency,
-      order_id: data.order.id, // Order ID from backend
-      name: "Default",
+      order_id: data.order.id,
+      name: "Foodie Quest",
       description: "Payment for your order",
       handler: async function (response: Razorpay.PaymentResponse) {
         const accessToken = await getAccessTokenSilently();
@@ -105,22 +104,22 @@ const CartComponent = () => {
             },
           }
         );
-        const jsonRes = await validateRes.json();
+        const orderInfo = await validateRes.json();
 
-        // Check if payment was successfully validated and redirect
-        if (jsonRes.message === "Success") {
+        if (orderInfo.paymentStatus === "Captured") {
+          toast.success("Payment successful");
           dispatch({
             type: "RESET_CART",
           });
-          // Redirect user to a success page (can be any path)
-          window.location.href = "/order"; // Using window.location for redirection
+          window.location.href = "/order";
         } else {
+          toast.error("Payment failed");
           window.location.href = `/details/${restaurant._id}`;
         }
       },
       prefill: {
         name: "Muskan",
-        email: "muskan123@gmail.com",
+        email: "muskan8752@gmail.com",
         contact: "9999999999",
       },
       notes: {
@@ -172,7 +171,7 @@ const CartComponent = () => {
           <div>
             <Link to={`/details/${restaurant._id}`}>
               <motion.h2
-                className="md:text-3xl text-xl font-bold text-gray-800 tracking-tight hover:underline"
+                className="md:text-3xl text-xl font-bold text-gray-800 tracking-tight hover:underline whitespace-nowrap"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}

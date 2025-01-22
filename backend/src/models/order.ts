@@ -2,13 +2,23 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
+    paymentId: {
+      type: String,
+      required: true,
+    },
+    paymentStatus: {
+      type: String,
+      required: true,
+    },
     restaurant: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurant",
+      required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     deliveryDetails: {
       email: { type: String, required: true },
@@ -26,7 +36,15 @@ const orderSchema = new mongoose.Schema(
     totalAmount: Number,
     status: {
       type: String,
-      enum: ["placed", "paid", "inProgress", "outForDelivery", "delieved"],
+      enum: [
+        "placed",
+        "failed",
+        "paid",
+        "inProgress",
+        "outForDelivery",
+        "delieved",
+      ],
+      default: "placed",
     },
   },
   { timestamps: true }

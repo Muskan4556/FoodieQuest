@@ -155,7 +155,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     if (state.cartItems.length === 0 && state.restaurant === null) {
       sessionStorage.removeItem("cart"); // Remove from session storage after reset
     }
-  }, [state]); // This will run when the cart state is reset
+  }, [state]); 
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>
@@ -164,5 +164,4 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Export the CartContext to be used in other files
 export { CartContext };
