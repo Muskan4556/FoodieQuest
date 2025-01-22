@@ -106,8 +106,7 @@ const CartComponent = () => {
         );
         const orderInfo = await validateRes.json();
 
-        if (orderInfo.paymentStatus === "Captured") {
-          toast.success("Payment successful");
+        if (orderInfo.paymentStatus === "captured") {
           dispatch({
             type: "RESET_CART",
           });
