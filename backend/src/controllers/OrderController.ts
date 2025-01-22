@@ -125,9 +125,7 @@ export const validatePayment = async (req: Request, res: Response) => {
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    return res.status(200).json({
-      order,
-    });
+    return res.status(200).json(order);
   } catch (error) {
     console.error(error);
     res.status(500).json({

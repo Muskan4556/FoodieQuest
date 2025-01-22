@@ -11,7 +11,6 @@ import { UserFormData } from "@/forms/user-profile-form/UserProfileForm";
 import { useCreateCheckoutSession } from "@/api/OrderApi";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth0 } from "@auth0/auth0-react";
-import { toast } from "sonner";
 
 const CartComponent = () => {
   const { state, dispatch } = useCart();
@@ -112,8 +111,7 @@ const CartComponent = () => {
           });
           window.location.href = "/order";
         } else {
-          toast.error("Payment failed");
-          window.location.href = `/details/${restaurant._id}`;
+          window.location.href = `/cart}`;
         }
       },
       prefill: {
